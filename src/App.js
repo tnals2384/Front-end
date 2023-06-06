@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Login from '../src/routes/Login';
+import Home from '../src/routes/Home';
 import {
     BrowserRouter as Router,
     Routes,
@@ -7,24 +9,7 @@ import {
   } from "react-router-dom";
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    useEffect(() => {
-        //토큰 확인을 위한 API 호출
-        const checkToken = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/token');
-                const data = await response.json();
-                console.log(data)
-                setIsLoggedIn(data.token !== null && data.token !== "클라이언트 없음");
-            } catch(error) {
-                console.log(error);
-            }
-        };
-
-        checkToken();
-    },[]);
-    
-    
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     
     return <Router>
         <Routes>
@@ -35,12 +20,5 @@ function App() {
 
 }
 
-function Home() {
-  return <div>Home Page</div>;
-}
-
-function Login() {
-  return <div>Login Page</div>;
-}
 
 export default App;
