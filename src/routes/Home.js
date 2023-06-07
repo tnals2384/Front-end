@@ -1,6 +1,15 @@
-import React from 'react';
+import  React from 'react';
+import  {useState} from 'react';
 import '../styles/Home.css';
+import Modal from '../components/Modal';
 function Home() {
+    // 모달창 노출 여부 state
+    const [modalOpen, setModalOpen] = useState(false);
+
+    // 모달창 노출
+    const showModal = () => {
+        setModalOpen(true);
+    };
 
     return (
         <div>
@@ -24,18 +33,32 @@ function Home() {
                         <button>오래된순</button>
                         </div>
                     </div>
-                    <div class="dropdown">
-                        <button class="dropdown-btn">전체</button>
-                        <div class="dropdown-content">
-                        <button></button>
-                        <button></button>
-                        </div>
+                    <div >
+                        <button class="modal-button" onClick={showModal}>전체</button>
+                        {modalOpen && <Modal setModalOpen={setModalOpen} />}
                     </div>
                 </div>
                 <ul class="post-list">
-                    <li>글 1</li>
-                    <li>글 2</li>
-                    <li>글 3</li>
+                    <li>
+                        <div class="title-duration">
+                            <h3>교내 소모임 해커톤</h3>
+                            <span class="duration">2022.06.01~2022.06.03</span>
+                        </div>
+                        <div class="tags">
+                            <span class="tag">#SpringBoot</span>
+                            <span class="tag">#단기간배포</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="title-duration">
+                            <h3>교내 소모임 해커톤</h3>
+                            <span class="duration">2022.06.01~2022.06.03</span>
+                        </div>
+                        <div class="tags">
+                            <span class="tag">#SpringBoot</span>
+                            <span class="tag">#단기간배포</span>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -43,3 +66,4 @@ function Home() {
 }
 
 export default Home;
+
