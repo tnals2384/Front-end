@@ -1,6 +1,6 @@
 import  React from 'react';
 import  {useState} from 'react';
-import '../styles/Home.css';
+import styles from '../styles/Home.module.css';
 import Modal from '../components/Modal';
 import Header from '../components/Header';
 
@@ -44,39 +44,51 @@ function Home() {
     return (
         <div>
            <Header />
-            <div class="container">
+           <div className={styles.container}>
                 <h1>고삼이님의 기록 💪🏻</h1>
-                <div class="button-container">
-                    <div class="dropdown">
-                    <button class="button">기간</button>
-                        <div class="dropdown-content">
-                        <button>최신순</button>
-                        <button>오래된순</button>
+                <div className={styles.buttonContainer}>
+                    <div className={styles.dropdown}>
+                        <button className={styles.button}>기간</button>
+                        <div className={styles.dropdownContent}>
+                            <button>최신순</button>
+                            <button>오래된순</button>
                         </div>
                     </div>
                     <div>
-                        <button class={`button ${tags.length !=0 ? "not-selected" : ""}`} onClick={showModal}>전체</button>
+                        <button
+                            className={`${styles.button} ${tags.length !== 0 ? styles.notSelected : ''}`}
+                            onClick={showModal}
+                        >
+                            전체
+                        </button>
                         {modalOpen && <Modal tags={tags} setTags={setTags} setModalOpen={setModalOpen} />}
                     </div>
                     {tags.map((tag) => (
-                    <button class="button" key={tag} onClick={() => handleTagClick(tag)}>{tag}</button>))}
+                        <button className={styles.button} key={tag} onClick={() => handleTagClick(tag)}>
+                            {tag}
+                        </button>
+                    ))}
                 </div>
-                <ul class="post-list">
-                {filteredPosts.map((post) => (
+                <ul className={styles.postList}>
+                    {filteredPosts.map((post) => (
                     <div key={post.title}>
                         <li>
-                        <div class="title-duration">
-                            <h3>{post.title}</h3>
-                            <span class="duration">{post.startDate}~{post.endDate}</span>
-                        </div>
-                        <div class="tags">
-                        {post.tags.map((tag) => (
-                            <span  class="tag" key={tag}>{tag}</span>
-                        ))}
-                        </div>
-                    </li>
+                            <div className={styles.titleDuration}>
+                                <h3>{post.title}</h3>
+                                <span className={styles.duration}>
+                                {post.startDate}~{post.endDate}
+                                </span>
+                            </div>
+                            <div className={styles.tags}>
+                                {post.tags.map((tag) => (
+                                <span className={styles.tag} key={tag}>
+                                    {tag}
+                                </span>
+                                ))}
+                            </div>
+                        </li>
                     </div>
-                ))}
+                    ))}
                 </ul>
             </div>
         </div>

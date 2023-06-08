@@ -1,40 +1,4 @@
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: white;
-  color: white;
-}
 
-.logo img {
-  max-height: 50px;
-}
-
-.nav-buttons {
-  display: flex;
-  align-items: center;
-  padding-right: 20px;
-}
-
-.write-button,
-.mypage-button,
-.login-button {
-  margin-left: 15px;
-  padding: 8px 16px;
-  background-color: transparent;
-  border: none;
-  color: black;
-  font-family: sans-serif;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.write-button:hover,
-.mypage-button:hover,
-.login-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
 
 .container {
   padding-left: 20%;
@@ -47,18 +11,18 @@ nav {
   padding: 20px;
 }
 
-.post-list {
+.postList {
   list-style: none;
   padding: 0;
 }
 
-.post-list li {
+.postListli {
   margin-bottom: 10px;
   padding: 20px;
   border-bottom: 1px solid #efefef;
 }
 
-.button-container {
+.buttonContainer {
   padding-top: 50px;
   padding-left: 20px;
   display: flex;
@@ -68,7 +32,7 @@ nav {
   position: relative;
 }
 
-.dropdown-content {
+.dropdownContent {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
@@ -77,7 +41,7 @@ nav {
   z-index: 1;
 }
 
-.dropdown-content button {
+.dropdownContent button {
   display: block;
   width: 100%;
   padding: 10px;
@@ -87,7 +51,7 @@ nav {
   cursor: pointer;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown:hover .dropdownContent {
   display: block;
 }
 
@@ -96,7 +60,7 @@ li {
   flex-direction: column;
 }
 
-.title-duration {
+.titleDuration {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -146,7 +110,7 @@ li {
   color: #ed5c5c;
 }
 
-.not-selected {
+.notSelected {
   border: 3px solid #6f6f6f;
   color: #6f6f6f;
 }

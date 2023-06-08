@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/PostForm.css';
+import styles from '../styles/Write.module.css';
 function PostForm() {
     const [title, setTitle] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -56,52 +56,52 @@ function PostForm() {
 
     return ( 
         <div>
-            <div className='post-container'>
-                <div className='column'>
-                    <div className='label'>제목</div>
+           <div className={styles.postContainer}>
+            <div className={styles.column}>
+                <div className={styles.label}>제목</div>
+                <input
+                type="text"
+                value={title}
+                onChange={handleTitleChange}
+                />
+            </div>
+            <div className={styles.column}>
+                <div className={styles.label}>진행 기간</div>
+                <div className={styles.duration}>
+                <input
+                    type="date"
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                />
+                <input
+                    type="date"
+                    value={endDate}
+                    onChange={handleEndDateChange}
+                />
+                </div>
+            </div>
+            <div className={styles.column}>
+                <div className={styles.label}>관련 직무</div>
+                <button onClick={handleToggleTagInput}>+</button>
+                {showTagInput && (
+                <div>
                     <input
-                        type="text"
-                        value={title}
-                        onChange={handleTitleChange}
+                    type="text"
+                    value={tagInput}
+                    onChange={handleTagInputChange}
+                    onKeyDown={handleKeyDown}
                     />
                 </div>
-                <div className='column'>
-                    <div className='label'>진행 기간</div>
-                        <div className='duration'>
-                            <input
-                            type="date"
-                            value={startDate}
-                            onChange={handleStartDateChange}
-                            />
-                            <input
-                            type="date"
-                            value={endDate}
-                            onChange={handleEndDateChange}
-                            />
-                        </div>
-                </div>
-                <div className='column'>
-                    <div className='label'>관련 직무</div>
-                        <button onClick={handleToggleTagInput}>+</button>
-                        {showTagInput && (
-                            <div>
-                                <input
-                                    type="text"
-                                    value={tagInput}
-                                    onChange={handleTagInputChange}
-                                    onKeyDown={handleKeyDown}
-                                />
-                            </div>
-                        )}
-                        <ul>
-                            {jobTags.map((tag, index) => (
-                            <li key={index}>
-                                {tag}
-                                <button onClick={() => handleRemoveTag(tag)}>X</button>
-                            </li>
-                            ))}
-                        </ul>
-                </div>
+                )}
+                <ul>
+                {jobTags.map((tag, index) => (
+                    <li key={index}>
+                    {tag}
+                    <button onClick={() => handleRemoveTag(tag)}>X</button>
+                    </li>
+                ))}
+                </ul>
+            </div>
             </div>
         </div>
         )

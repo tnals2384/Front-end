@@ -7,14 +7,14 @@
 }
 
 
-.google-login {
+.googleLogin {
     position: absolute;
     top: 55%;
     left: 50%;
     transform: translate(-50%, 50%);
   }
   
-  .google-button {
+  .googleButton {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -26,22 +26,22 @@
     transition: background-color 0.3s ease;
   }
   
-  .google-button:hover {
+  .googleButton:hover {
     background-color: #b5ccfd;
   }
   
-  .google-icon-wrapper {
+  .googleIconWrapper {
     width: 20px;
     height: 20px;
     margin-right: 10px;
   }
   
-  .google-icon {
+  .googleIcon {
     width: 100%;
     height: 100%;
   }
   
-  .button-text {
+  .buttonText {
     font-size: 16px;
   }
   

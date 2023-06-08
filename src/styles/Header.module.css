@@ -1,0 +1,42 @@
+.writeButton,
+.mypageButton,
+.loginButton {
+    margin-left: 15px;
+    padding: 8px 16px;
+    background-color: transparent;
+    border: none;
+    color: black;
+    font-family: sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.writeButton:hover,
+.mypageButton:hover,
+.loginButton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    color: white;
+}
+  
+.logo img {
+    max-height: 50px;
+}
+  
+.navButtons {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+
+
+  

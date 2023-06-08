@@ -1,18 +1,18 @@
 import React from 'react' 
-import '../styles/Login.css';
+import styles from '../styles/Login.module.css';
 function Login() {
     return (
-        <div class="main">
-            <img class="mainImg" src='/PODA.png' alt = "mainImg"/>
-            <div class="google-login">
-                <a href="#" class="google-button">
-                <div class="google-icon-wrapper">
-                    <img class="google-icon" src="/google-icon.png"/>
-                </div>
-                <span class="button-text">구글로 로그인</span>
-                </a>
+        <div className={styles.main}>
+        <img className={styles.mainImg} src="/PODA.png" alt="mainImg" />
+        <div className={styles.googleLogin}>
+          <a href="#" className={styles.googleButton}>
+            <div className={styles.googleIconWrapper}>
+              <img className={styles.googleIcon} src="/google-icon.png" alt="google-icon" />
             </div>
+            <span className={styles.buttonText}>구글로 로그인</span>
+          </a>
         </div>
+      </div>
     );
 }
 
