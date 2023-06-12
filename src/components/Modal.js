@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/Modal.module.css';
 
-function Modal({ setModalOpen, tags, setTags}) {
+const Modal =({ setModalOpen, tags, setTags}) => {
 
     const handleTagClick = (tag) => {
         if (tags.includes(tag)) {

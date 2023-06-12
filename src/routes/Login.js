@@ -1,6 +1,6 @@
 import React from 'react' 
 import styles from '../styles/Login.module.css';
-function Login() {
+const Login = () => {
     return (
         <div className={styles.main}>
         <img className={styles.mainImg} src="/PODA.png" alt="mainImg" />

@@ -6,7 +6,7 @@ import Header from '../components/Header';
 
 
 
-function Home() {
+const Home = () => {
     //선택된 tag
     const [tags, setTags] = useState([]);
     // 모달창 노출 여부 state
