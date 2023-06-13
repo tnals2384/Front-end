@@ -1,1 +1,12 @@
-{ "extends": ["react-app", "plugin:prettier/recommended"] }
+{
+    "extends": [
+      "airbnb", 
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "object-curly-newline": 0
+    },
+    "env": {
+      "browser": true
+    }
+}

@@ -10,29 +10,29 @@ const PostForm = () => {
     const [abilityTags, setAbilityTags] = useState([]);
     const [stackTags, setStackTags] = useState([]);
 
-    const handleTitleChange = (e) => {
+    const handleTitleChange = e => {
         setTitle(e.target.value);
     };
 
-    const handleStartDateChange = (e) => {
+    const handleStartDateChange = e => {
         setStartDate(e.target.value);
     };
-    
-      const handleEndDateChange = (e) => {
+
+    const handleEndDateChange = e => {
         setEndDate(e.target.value);
     };
 
-    return ( 
-
-           <div className={styles.postContainer}>
-                <div className={styles.postForm}>
+    return (
+        <div className={styles.postContainer}>
+            <div className={styles.postForm}>
                 <div className={styles.column}>
                     <div className={styles.label}>제목</div>
-                    <input className={styles.inputText}
-                    type="text"
-                    value={title}
-                    onChange={handleTitleChange}
-                    placeholder='제목을 입력해주세요'
+                    <input
+                        className={styles.inputText}
+                        type="text"
+                        value={title}
+                        onChange={handleTitleChange}
+                        placeholder="제목을 입력해주세요"
                     />
                 </div>
                 <div className={styles.column}>
@@ -40,12 +40,12 @@ const PostForm = () => {
                     <div className={styles.duration}>
                         <div className={styles.date}>
                             <img src="/right.png" alt="오른쪽 화살표" />
-                            <input 
+                            <input
                                 type="date"
                                 value={startDate}
                                 onChange={handleStartDateChange}
                             />
-                    </div>
+                        </div>
                         <div className={styles.date}>
                             <img src="/left.png" alt="왼쪽 화살표" />
                             <input
@@ -56,13 +56,24 @@ const PostForm = () => {
                         </div>
                     </div>
                 </div>
-                <TagInput tags={jobTags} setTags={setJobTags} tagType="관련 직무" />
-                <TagInput tags={abilityTags} setTags={setAbilityTags} tagType="키워드" />
-                <TagInput tags={stackTags} setTags={setStackTags} tagType="사용 기술" />
-                </div>
+                <TagInput
+                    tags={jobTags}
+                    setTags={setJobTags}
+                    tagType="관련 직무"
+                />
+                <TagInput
+                    tags={abilityTags}
+                    setTags={setAbilityTags}
+                    tagType="키워드"
+                />
+                <TagInput
+                    tags={stackTags}
+                    setTags={setStackTags}
+                    tagType="사용 기술"
+                />
             </div>
-
-        )
+        </div>
+    );
 };
 
 export default PostForm;
