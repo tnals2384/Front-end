@@ -29,7 +29,7 @@ const Modal = ({ setModalOpen, tags, setTags }) => {
                 </button>
                 <div className={styles.tagBox}>
                     <h2>관련 직무</h2>
-                    <div class="tags">
+                    <div className={styles.tags}>
                         <button
                             className={`${styles.tag} ${
                                 tags.includes('#프론트엔드')
@@ -52,7 +52,7 @@ const Modal = ({ setModalOpen, tags, setTags }) => {
                 </div>
                 <div className={styles.tagBox}>
                     <h2>키워드</h2>
-                    <div class="tags">
+                    <div className={styles.tags}>
                         <button
                             className={`${styles.tag} ${
                                 tags.includes('#단기간배포')
@@ -67,7 +67,7 @@ const Modal = ({ setModalOpen, tags, setTags }) => {
                 </div>
                 <div className={styles.tagBox}>
                     <h2>사용기술</h2>
-                    <div class="tags">
+                    <div className={styles.tags}>
                         <button
                             className={`${styles.tag} ${
                                 tags.includes('#SpringBoot')
