@@ -11,7 +11,6 @@
 .container {
     width: 60%;
     height: 60%;
-  
     z-index: 999;
 
     position: absolute;
