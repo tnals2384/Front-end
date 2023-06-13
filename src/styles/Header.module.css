@@ -26,17 +26,13 @@ nav {
     background-color: white;
     color: white;
 }
-  
+
 .logo img {
     max-height: 50px;
 }
-  
+
 .navButtons {
     display: flex;
     align-items: center;
     padding-right: 20px;
 }
-
-
-
-  
