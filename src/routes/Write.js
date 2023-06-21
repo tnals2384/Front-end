@@ -21,6 +21,7 @@ const Write = () => {
         const files = Array.from(event.target.files);
         setSelectedFiles(files);
     };
+
     const handleButtonClick = e => {
         fileInput.current.click();
     };
