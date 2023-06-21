@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Login from '../src/routes/Login';
 import Home from '../src/routes/Home';
 import Write from '../src/routes/Write';
+import MyPage from '../src/routes/MyPage';
 
 import {
     BrowserRouter as Router,
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/write" element={<Write />} />
+            <Route path="/mypage" element={<MyPage />} />
         </Routes>
     </Router>
 
