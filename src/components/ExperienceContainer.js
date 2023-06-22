@@ -4,7 +4,7 @@ import ExUpdateForm from './ExUpdateForm';
 
 
 //단일 experience를 담은 container
-const ExperienceContainer = ({ experienceId, title, content }) => {
+const ExperienceContainer = ({ experienceId, title, content,onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [exTitle, setExTitle] = useState(title);
     const [exContent, setExContent] = useState(content);
@@ -19,6 +19,11 @@ const ExperienceContainer = ({ experienceId, title, content }) => {
     const handleSaveClick = () => {
         setIsEditing(false);
     };
+    //삭제
+    const handleDeleteClick = () => {
+        onDelete(experienceId);
+      };
+    
 
     return (
         <div style={{ width: '100%' }}>
@@ -39,12 +44,17 @@ const ExperienceContainer = ({ experienceId, title, content }) => {
                                 {exContent.length}자
                             </div>
                         </div>
+                        <div className={styles.buttonContainer}>
+                        <button className={styles.deleteButton} onClick={handleDeleteClick}>
+                                <span>삭제</span>
+                        </button>
                         <button
                             className={styles.updateButton}
                             onClick={handleEditClick}
                         >
                             <span>수정</span>
                         </button>
+                        </div>
                     </div>
                     <div className={styles.textContainer}>{exContent}</div>
                 </div>

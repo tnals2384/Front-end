@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import styles from '../styles/Detail.module.css';
 import ExperienceContainer from '../components/ExperienceContainer';
 import PostUpdateModal from '../components/PostUpdateModal';
-
+import ExCreateForm from '../components/ExCreateForm';
 const PostDetail = ({ posts }) => {
     //url 파라미터로 id 찾아옴
     const { id } = useParams();
@@ -12,6 +12,8 @@ const PostDetail = ({ posts }) => {
 
     //modal
     const [modalOpen, setModalOpen] = useState(false);
+
+    
 
     //post
     const [title, setTitle] = useState(post.title);
@@ -22,7 +24,7 @@ const PostDetail = ({ posts }) => {
     const [stackTags, setStackTags] = useState(post.tags['사용한 기술']);
 
     //experience
-    const experiences = [
+    const [experiences, setExperiences] = useState( [
         {
             experienceId: 1,
             title: '활동을 하게 된 동기를 기록해주세요.',
@@ -34,8 +36,20 @@ const PostDetail = ({ posts }) => {
             content: 'Content 2',
         },
         // ... 다른 experiences 데이터
-    ];
+    ]);
+    const [showForm, setShowForm] = useState(false);
 
+    const handleAddExperience = (newExperience) => {
+        setExperiences([...experiences, newExperience]);
+        setShowForm(false);
+      };
+
+      const handleDeleteExperience = (experienceId) => {
+        const updatedExperiences = experiences.filter(
+          (experience) => experience.experienceId !== experienceId
+        );
+        setExperiences(updatedExperiences);
+      };
     // 모달창 노출
     const showModal = () => {
         setModalOpen(true);
@@ -147,9 +161,26 @@ const PostDetail = ({ posts }) => {
                             experienceId={experience.experienceId}
                             title={experience.title}
                             content={experience.content}
+                            onDelete={handleDeleteExperience}
                         />
                     ))}
-
+                        {!showForm ? (
+                            <div className={styles.add}>
+                            내용 추가하기
+                            <button
+                                className={styles.addButton} 
+                                onClick={()=>setShowForm(!showForm)}      
+                            >
+                                +
+                            </button>
+                        </div>
+                    ) : (
+                        <ExCreateForm
+                        experiences={experiences}
+                        setExperiences={setExperiences}
+                        onAddExperience={handleAddExperience}
+                    />
+                    )}
                     <div className={styles.exContainer}>
                         <div className={styles.titleContainer}>
                             <div className={styles.exTitle}>파일</div>
