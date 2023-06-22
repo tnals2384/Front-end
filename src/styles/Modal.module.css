@@ -63,6 +63,7 @@
 .postContainer {
     display: flex;
     width: 100%;
+    height: 100%;
     flex-direction: column;
 
     border-radius: 15px;

@@ -45,6 +45,7 @@
     font-size: 35px;
     text-align: center;
     flex: 1;
+
 }
 
 .setting {
@@ -52,7 +53,6 @@
     height: 30px;
     padding: 10px;
     display: flex;
-    align-items: center;
     justify-content: flex-end;
     cursor: pointer;
 }
@@ -61,6 +61,7 @@
     text-align: right;
     font-weight: 400;
 }
+
 
 .tagColumn {
     display: grid; /*그리드 형태로 label부분과 input 부분 분리*/
@@ -142,13 +143,12 @@
 .buttonContainer {
     justify-content: flex-end; /*오른쪽 끝에 위치*/
     display: flex;
-
 }
 .updateButton {
     display: flex;
     align-items: center;
     height: 25px;
-    margin-top: 10px;
+
     padding-left: 10px;
     padding-right: 10px;
 
@@ -165,20 +165,23 @@
     display: flex;
     align-items: center;
     height: 25px;
-    margin-top: 10px;
+   
     padding-left: 10px;
     padding-right: 10px;
 
-    border: 1px solid #ff8eae;
+    border: 1px solid #a774c7;
     border-radius: 15px;
     background-color: #fff;
     cursor: pointer;
     font-size: 13px;
     white-space: nowrap;
+
+    
 }
 
 .deleteButton:hover {
-    background-color: #ff8eae;
+    background-color: #a774c7;
+    color:white;
 }
 .textContainer {
     box-sizing: border-box;
@@ -228,3 +231,24 @@
     font-size: 20px;
 }
 
+
+.postDelete {
+    display: flex;
+    align-items: center;
+    height: 30px;
+   
+    padding: 10px;
+    border: 2px solid #a774c7;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #a774c7;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.postDelete:hover {
+    background-color: #a774c7;
+    color:white;
+}

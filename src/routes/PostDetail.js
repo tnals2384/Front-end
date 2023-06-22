@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Header from '../components/Header';
 import styles from '../styles/Detail.module.css';
 import ExperienceContainer from '../components/ExperienceContainer';
 import PostUpdateModal from '../components/PostUpdateModal';
 import ExCreateForm from '../components/ExCreateForm';
-const PostDetail = ({ posts }) => {
+const PostDetail = ({ posts , onDeletePost}) => {
     //url 파라미터로 id 찾아옴
     const { id } = useParams();
+    const navigate = useNavigate();
     const post = posts.find(post => post.id === Number(id));
+
+    //삭제
+    const handleDeleteClick = () => {
+        onDeletePost(Number(id));
+        navigate('/');
+      };
+
 
     //modal
     const [modalOpen, setModalOpen] = useState(false);
@@ -52,7 +61,7 @@ const PostDetail = ({ posts }) => {
         );
         setExperiences(updatedExperiences);
     };
-    
+
     // 모달창 노출
     const showModal = () => {
         setModalOpen(true);
@@ -95,6 +104,7 @@ const PostDetail = ({ posts }) => {
                     <div className={styles.postInfo}>
                         <div className={styles.titleLine}>
                             <h1 className={styles.title}>{title}</h1>
+                            <button className={styles.postDelete} onClick={handleDeleteClick}>글 삭제</button>
                             <img
                                 src="/setting.png"
                                 alt="세팅 이미지"
