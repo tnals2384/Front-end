@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import styles from '../styles/Detail.module.css';
 import ExperienceContainer from '../components/ExperienceContainer';
 import PostUpdateModal from '../components/PostUpdateModal';
 import ExCreateForm from '../components/ExCreateForm';
-const PostDetail = ({ posts , onDeletePost}) => {
+const PostDetail = ({ posts, onDeletePost }) => {
     //url 파라미터로 id 찾아옴
     const { id } = useParams();
     const navigate = useNavigate();
@@ -16,8 +16,7 @@ const PostDetail = ({ posts , onDeletePost}) => {
     const handleDeleteClick = () => {
         onDeletePost(Number(id));
         navigate('/');
-      };
-
+    };
 
     //modal
     const [modalOpen, setModalOpen] = useState(false);
@@ -89,6 +88,11 @@ const PostDetail = ({ posts , onDeletePost}) => {
         fileInput.current.click();
     };
 
+    const handleDeleteFile = () => {
+        setSelectedFiles([]);
+    };
+
+
     //id로 post를 찾지 못했을 때
     if (!post) {
         return <div>글을 찾을 수 없습니다.</div>;
@@ -104,7 +108,12 @@ const PostDetail = ({ posts , onDeletePost}) => {
                     <div className={styles.postInfo}>
                         <div className={styles.titleLine}>
                             <h1 className={styles.title}>{title}</h1>
-                            <button className={styles.postDelete} onClick={handleDeleteClick}>글 삭제</button>
+                            <button
+                                className={styles.postDelete}
+                                onClick={handleDeleteClick}
+                            >
+                                글 삭제
+                            </button>
                             <img
                                 src="/setting.png"
                                 alt="세팅 이미지"
@@ -198,22 +207,30 @@ const PostDetail = ({ posts , onDeletePost}) => {
                         <div className={styles.exContainer}>
                             <div className={styles.titleContainer}>
                                 <div className={styles.exTitle}>파일</div>
-
-                                <button
-                                    className={styles.updateButton}
-                                    onClick={handleButtonClick}
-                                >
-                                    수정
-                                </button>
-                                <input
-                                    id="file-upload"
-                                    type="file"
-                                    ref={fileInput}
-                                    multiple={true}
-                                    onChange={handleFileChange}
-                                    style={{ display: 'none' }}
-                                />
+                                <div className={styles.buttonContainer}>
+                                    <button
+                                        className={styles.deleteButton}
+                                        onClick={handleDeleteFile}
+                                    >
+                                        <span>삭제</span>
+                                    </button>
+                                    <button
+                                        className={styles.updateButton}
+                                        onClick={handleButtonClick}
+                                    >
+                                        수정
+                                    </button>
+                                    <input
+                                        id="file-upload"
+                                        type="file"
+                                        ref={fileInput}
+                                        multiple={true}
+                                        onChange={handleFileChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                </div>
                             </div>
+
                             {selectedFiles.map((file, index) => {
                                 if (file.type === 'image/png') {
                                     return (
