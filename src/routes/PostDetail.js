@@ -13,8 +13,6 @@ const PostDetail = ({ posts }) => {
     //modal
     const [modalOpen, setModalOpen] = useState(false);
 
-    
-
     //post
     const [title, setTitle] = useState(post.title);
     const [startDate, setStartDate] = useState(post.startDate);
@@ -24,7 +22,7 @@ const PostDetail = ({ posts }) => {
     const [stackTags, setStackTags] = useState(post.tags['사용한 기술']);
 
     //experience
-    const [experiences, setExperiences] = useState( [
+    const [experiences, setExperiences] = useState([
         {
             experienceId: 1,
             title: '활동을 하게 된 동기를 기록해주세요.',
@@ -37,19 +35,24 @@ const PostDetail = ({ posts }) => {
         },
         // ... 다른 experiences 데이터
     ]);
+
+    //경험 추가 form 보이기
     const [showForm, setShowForm] = useState(false);
 
-    const handleAddExperience = (newExperience) => {
+    //경험 추가
+    const handleAddExperience = newExperience => {
         setExperiences([...experiences, newExperience]);
         setShowForm(false);
-      };
+    };
 
-      const handleDeleteExperience = (experienceId) => {
+    //경험 삭제
+    const handleDeleteExperience = experienceId => {
         const updatedExperiences = experiences.filter(
-          (experience) => experience.experienceId !== experienceId
+            experience => experience.experienceId !== experienceId,
         );
         setExperiences(updatedExperiences);
-      };
+    };
+    
     // 모달창 노출
     const showModal = () => {
         setModalOpen(true);
@@ -76,7 +79,6 @@ const PostDetail = ({ posts }) => {
     const handleButtonClick = e => {
         fileInput.current.click();
     };
-
 
     //id로 post를 찾지 못했을 때
     if (!post) {
@@ -164,32 +166,78 @@ const PostDetail = ({ posts }) => {
                             onDelete={handleDeleteExperience}
                         />
                     ))}
-                        {!showForm ? (
-                            <div className={styles.add}>
+                    {!showForm ? (
+                        <div className={styles.add}>
                             내용 추가하기
                             <button
-                                className={styles.addButton} 
-                                onClick={()=>setShowForm(!showForm)}      
+                                className={styles.addButton}
+                                onClick={() => setShowForm(!showForm)}
                             >
                                 +
                             </button>
                         </div>
                     ) : (
                         <ExCreateForm
-                        experiences={experiences}
-                        setExperiences={setExperiences}
-                        onAddExperience={handleAddExperience}
-                    />
+                            experiences={experiences}
+                            setExperiences={setExperiences}
+                            onAddExperience={handleAddExperience}
+                        />
                     )}
-                    <div className={styles.exContainer}>
-                        <div className={styles.titleContainer}>
-                            <div className={styles.exTitle}>파일</div>
 
+                    {selectedFiles.length > 0 ? (
+                        <div className={styles.exContainer}>
+                            <div className={styles.titleContainer}>
+                                <div className={styles.exTitle}>파일</div>
+
+                                <button
+                                    className={styles.updateButton}
+                                    onClick={handleButtonClick}
+                                >
+                                    수정
+                                </button>
+                                <input
+                                    id="file-upload"
+                                    type="file"
+                                    ref={fileInput}
+                                    multiple={true}
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                />
+                            </div>
+                            {selectedFiles.map((file, index) => {
+                                if (file.type === 'image/png') {
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={styles.fileContainer}
+                                        >
+                                            <img
+                                                src={URL.createObjectURL(file)}
+                                                alt={file.name}
+                                                className={styles.image}
+                                            />
+                                        </div>
+                                    );
+                                } else {
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={styles.fileContainer}
+                                        >
+                                            {file.name}
+                                        </div>
+                                    );
+                                }
+                            })}
+                        </div>
+                    ) : (
+                        <div className={styles.add}>
+                            파일 첨부하기
                             <button
-                                className={styles.updateButton}
+                                className={styles.addButton}
                                 onClick={handleButtonClick}
                             >
-                                수정
+                                +
                             </button>
                             <input
                                 id="file-upload"
@@ -197,48 +245,11 @@ const PostDetail = ({ posts }) => {
                                 ref={fileInput}
                                 multiple={true}
                                 onChange={handleFileChange}
+                                className={styles.addButton}
                                 style={{ display: 'none' }}
                             />
                         </div>
-                        <div className={styles.fileContainer}>
-                            <img
-                                src="/PODA.png"
-                                alt="로고 이미지"
-                                className={styles.image}
-                            />
-                        </div>
-                        {selectedFiles.length > 0 && (
-                            <div className={styles.fileList}>
-                                {selectedFiles.map((file, index) => {
-                                    if (file.type === 'image/png') {
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={styles.fileContainer}
-                                            >
-                                                <img
-                                                    src={URL.createObjectURL(
-                                                        file,
-                                                    )}
-                                                    alt={file.name}
-                                                    className={styles.image}
-                                                />
-                                            </div>
-                                        );
-                                    } else {
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={styles.fileContainer}
-                                            >
-                                                {file.name}
-                                            </div>
-                                        );
-                                    }
-                                })}
-                            </div>
-                        )}
-                    </div>
+                    )}
                     <a
                         href="https://www.flaticon.com/kr/free-icons/"
                         title="기어 아이콘"

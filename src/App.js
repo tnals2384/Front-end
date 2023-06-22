@@ -30,7 +30,7 @@ function App() {
                   },
                 file: 
                 //임시! 나중에 file형식으로 가져오면됨
-                    ['최종보고서.doc','PODA.png']
+                    []
                 
             },
             {
