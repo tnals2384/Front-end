@@ -3,7 +3,6 @@ import { useState } from 'react';
 import styles from '../styles/Home.module.css';
 import Modal from '../components/Modal';
 import Header from '../components/Header';
-import PostDetail from './PostDetail';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
