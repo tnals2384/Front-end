@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Login from '../src/routes/Login';
 import Home from '../src/routes/Home';
 import Write from '../src/routes/Write';
+import MyPage from '../src/routes/MyPage';
 import PostDetail from './routes/PostDetail';
 
 
@@ -73,7 +74,6 @@ function App() {
             <Route path="/" element={isLoggedIn ? <Home posts={posts}/> : <Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/write" element={<Write />} />
-            <Route path="/posts/:id" element={<PostDetail posts={posts} onDeletePost={handleDeletePost}/>} />
         </Routes>
     </Router>
 
