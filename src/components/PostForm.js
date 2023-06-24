@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/Write.module.css';
 import TagInput from './TagInput';
 
+
 const PostForm = () => {
     const [title, setTitle] = useState('');
     const [startDate, setStartDate] = useState('');

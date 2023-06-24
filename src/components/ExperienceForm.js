@@ -9,6 +9,8 @@ const ExperienceForm = ({ title, onRemove }) => {
         setText(newText);
     };
 
+
+
     const characterCount = text.length;
 
     const handleRemove = () => {
