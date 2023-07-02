@@ -1,87 +1,71 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from '../styles/Modal.module.css';
 
-const Modal = ({ setModalOpen, tags, setTags }) => {
-    const handleTagClick = tag => {
-        if (tags.includes(tag)) {
-            // 이미 선택된 태그인 경우 제거
-            setTags(tags.filter(selectedTag => selectedTag !== tag));
+const Modal = ({ setModalOpen, selectedTags, setSelectedTags }) => {
+        
+    //나의 tag list 
+    const [tags, setTags] = useState([]);
+
+    //api get 요청으로 나의 tagList 받아오기
+    useEffect(() => {
+        fetch('/api/v1/tags')
+        .then(response => response.json())
+        .then(data => {
+            const tagsData = data.result.map(tagData => ({
+            tagType: tagData.tagType,
+            tagNames: tagData.tagName,
+            }));
+            setTags(tagsData);
+        })
+        .catch(error => {
+            console.error('태그 데이터를 가져오는 동안 오류가 발생했습니다.', error);
+        });
+    }, []);
+
+
+    const handleTagClick = ( tagName) => {
+        // 선택한 태그를 추가 또는 제거
+        if (selectedTags.includes(tagName)) {
+          setSelectedTags(selectedTags.filter(tag => tag !== tagName));
         } else {
-            // 선택되지 않은 태그인 경우 추가
-            setTags([...tags, tag]);
+          setSelectedTags([...selectedTags, tagName]);
         }
     };
 
+
     // 모달 끄기
     const closeModal = () => {
+        setSelectedTags(selectedTags);
         setModalOpen(false);
     };
 
-    /*
-    서버에서 넘겨준 myTagList를 통해 아래 버튼들을 구성해야함.
-    지금은 임시!
-    */
+
     return (
         <div className={styles.modalBox}>
             <div className={styles.container}>
                 <button className={styles.close} onClick={closeModal}>
                     X
                 </button>
-                <div className={styles.tagBox}>
-                    <h2>관련 직무</h2>
-                    <div className={styles.tags}>
-                        <button
-                            className={`${styles.tag} ${
-                                tags.includes('#프론트엔드')
-                                    ? styles.selected
-                                    : ''
-                            }`}
-                            onClick={() => handleTagClick('#프론트엔드')}
-                        >
-                            #프론트엔드
-                        </button>
-                        <button
-                            className={`${styles.tag} ${
-                                tags.includes('#백엔드') ? styles.selected : ''
-                            }`}
-                            onClick={() => handleTagClick('#백엔드')}
-                        >
-                            #백엔드
-                        </button>
+                {tags.map(tag => (
+                    <div key={tag.tags} className={styles.tagBox}>
+                        <h2>{tag.tagType}</h2>
+                        <div className={styles.tags}>
+                            {tag.tagNames.map(tagName => (
+                            <button
+                                key={tagName}
+                                className={`${styles.tag} ${
+                                selectedTags.includes(tagName) ? styles.selected : ''
+                                }`}
+                                onClick={() => handleTagClick( tagName)}
+                            >
+                                {tagName}
+                            </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
-                <div className={styles.tagBox}>
-                    <h2>키워드</h2>
-                    <div className={styles.tags}>
-                        <button
-                            className={`${styles.tag} ${
-                                tags.includes('#단기간배포')
-                                    ? styles.selected
-                                    : ''
-                            }`}
-                            onClick={() => handleTagClick('#단기간배포')}
-                        >
-                            #단기간배포
-                        </button>
-                    </div>
-                </div>
-                <div className={styles.tagBox}>
-                    <h2>사용기술</h2>
-                    <div className={styles.tags}>
-                        <button
-                            className={`${styles.tag} ${
-                                tags.includes('#SpringBoot')
-                                    ? styles.selected
-                                    : ''
-                            }`}
-                            onClick={() => handleTagClick('#SpringBoot')}
-                        >
-                            #SpringBoot
-                        </button>
-                    </div>
-                </div>
+                ))}
+                </div>   
             </div>
-        </div>
     );
 };
 export default Modal;
