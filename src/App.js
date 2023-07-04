@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Login from '../src/routes/Login';
 import Home from '../src/routes/Home';
 import Write from '../src/routes/Write';
 import PostDetail from './routes/PostDetail';
 import MyPage from '../src/routes/MyPage';
-
 import {
     BrowserRouter as Router,
     Routes,

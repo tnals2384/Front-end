@@ -10,23 +10,37 @@ const Home = () => {
     const [posts, setPosts] = useState([]);
     //최신순, 오래된순 정렬방법
     const [orderBy, setOrderBy] = useState('newest');
-
+    //현재 페이지 
+    const [currentPage, setCurrentPage] = useState(0);
+    //총 page 수
+    const [totalPages, setTotalPages] = useState(1);
+    //총 post 수
+    const [totalPosts, setTotalPosts] = useState(0);
+    const handlePageChange = (page) => {
+        if (page >= totalPages) {
+            return; // 다음 페이지가 없으면 클릭 이벤트 처리 중단
+        }
+        setCurrentPage(page);
+        window.scrollTo({ top: 0});
+    };
     //최신순, 오래된순 버튼 선택시 set
     const handleOrderClick = (order) => {
         setOrderBy(order);
     };
-
+    
     //api get요청으로 orderBy에 따라 posts목록 받아오기
     useEffect(() => {
-        fetch(`/api/v1/posts?page=0&orderBy=${orderBy}`)
+        fetch(`/api/v1/posts?page=${currentPage}&orderBy=${orderBy}`)
           .then(response => response.json())
           .then(data => {
             setPosts(data.result.pagePosts);
+            setTotalPages(data.result.totalPages);
+            setTotalPosts(data.result.totalPosts);
           })
           .catch(error => {
             console.error('post 데이터를 가져오는 동안 오류가 발생했습니다.', error);
           });
-      }, [orderBy]);
+      }, [orderBy,currentPage]);
 
 
       
@@ -124,6 +138,24 @@ const Home = () => {
                     </div>
                     ))}
                     </ul>
+                    {totalPosts > 0 && (
+                    <div className={styles.pagination}>
+                        <button
+                        className={`${styles.pageButton} ${currentPage === 0? styles.disabled : ''}`}
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 0}
+                        >
+                        이전
+                        </button>
+                        <button
+                        className={`${styles.pageButton} ${currentPage === totalPages -1 ? styles.disabled : ''}`}
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages - 1}
+                        >
+                        다음
+                        </button>
+                    </div>
+                    )}
                 </div>
             </div>
         </div>
