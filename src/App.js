@@ -65,8 +65,6 @@ function App() {
         const updatedPosts = posts.filter((post) => post.id !== postId);
         setPosts(updatedPosts);
       };
-
-      console.log(posts);
     return <Router>
         <Routes>
             <Route path="/" element={isLoggedIn ? <Home posts={posts}/> : <Navigate to="/login" />} />
