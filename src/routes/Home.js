@@ -4,6 +4,8 @@ import styles from '../styles/Home.module.css';
 import Modal from '../components/Modal';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 
 const Home = () => {
     //posts 목록
@@ -16,10 +18,8 @@ const Home = () => {
     const [totalPages, setTotalPages] = useState(1);
     //총 post 수
     const [totalPosts, setTotalPosts] = useState(0);
+    
     const handlePageChange = (page) => {
-        if (page >= totalPages) {
-            return; // 다음 페이지가 없으면 클릭 이벤트 처리 중단
-        }
         setCurrentPage(page);
         window.scrollTo({ top: 0});
     };
@@ -43,9 +43,34 @@ const Home = () => {
       }, [orderBy,currentPage]);
 
 
-      
-      //선택된 태그
+    //선택된 태그
     const [selectedTags, setSelectedTags] = useState([]);
+    const [tagPosts, setTagPosts] = useState([]);
+
+    //api get요청으로 선택된 tags에 해당하는 posts목록 받아오기
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const params = selectedTags.map(tag => `tag=${encodeURIComponent(tag)}`);
+            const query = params.join('&');
+            const url = `/api/v1/posts/tag?${query}&page=${currentPage}`;
+            const response = await axios.get(url);
+            setTagPosts(response.data.result.pagePosts);
+            setTotalPages(response.data.result.totalPages);
+            setTotalPosts(response.data.result.totalPosts);
+          } catch (error) {
+            console.error(error);
+          }
+        };
+
+        if (selectedTags.length > 0) {
+            fetchData();
+          } else {
+            // selectedTags가 비어있을 때에는 tagPosts를 초기화
+            setTagPosts([]);
+          }
+      }, [selectedTags,currentPage]);
+    
     
     // 모달창 노출 여부 state
     const [modalOpen, setModalOpen] = useState(false);
@@ -54,6 +79,7 @@ const Home = () => {
     const showModal = () => {
         setModalOpen(true);
     };
+
     //tag 삭제
     const handleTagClick = tag => {
         if (selectedTags.includes(tag)) {
@@ -63,13 +89,8 @@ const Home = () => {
             // 선택되지 않은 태그인 경우 추가
             setSelectedTags([...selectedTags, tag]);
           }
+        setCurrentPage(0);
     };
-
-    //선택된 태그의 글만 표시
-    const filteredPosts = posts.filter(post =>
-        selectedTags.every(tag => post.tagName.includes(tag))
-      );
-      
 
     return (
         <div>
@@ -101,6 +122,7 @@ const Home = () => {
                                 selectedTags={selectedTags}
                                 setSelectedTags={setSelectedTags}
                                 setModalOpen={setModalOpen}
+                                setCurrentPage={setCurrentPage}
                             />
                             )}
                     </div>
@@ -116,27 +138,49 @@ const Home = () => {
                 </div>
                 <div className={styles.postListContainer}>
                     <ul className={styles.postList}>
-                    {filteredPosts.map(post => (
-                    <div key={post.id} className={styles.postListli}>
-                        <Link to={`/posts/${post.id}`}>
-                        <li>
-                            <div className={styles.titleDuration}>
-                            <h3>{post.title}</h3>
-                            <span className={styles.duration}>
-                                {post.beginAt}~{post.finishAt}
-                            </span>
-                            </div>
-                            <div className={styles.tags}>
-                            {post.tagName.map(tag => (
-                                <span className={styles.tag} key={tag}>
-                                {tag}
+                    {selectedTags.length === 0
+                    ? posts.map((post) => (
+                        <div key={post.id} className={styles.postListli}>
+                            <Link to={`/posts/${post.id}`}>
+                            <li>
+                                <div className={styles.titleDuration}>
+                                <h3>{post.title}</h3>
+                                <span className={styles.duration}>
+                                    {post.beginAt}~{post.finishAt}
                                 </span>
-                            ))}
-                            </div>
-                        </li>
-                        </Link>
-                    </div>
-                    ))}
+                                </div>
+                                <div className={styles.tags}>
+                                {post.tagName.map(tag => (
+                                    <span className={styles.tag} key={tag}>
+                                    {tag}
+                                    </span>
+                                ))}
+                                </div>
+                            </li>
+                            </Link>
+                        </div>
+                        ))
+                    : tagPosts.map((post) => (
+                        <div key={post.id} className={styles.postListli}>
+                            <Link to={`/posts/${post.id}`}>
+                            <li>
+                                <div className={styles.titleDuration}>
+                                <h3>{post.title}</h3>
+                                <span className={styles.duration}>
+                                    {post.beginAt}~{post.finishAt}
+                                </span>
+                                </div>
+                                <div className={styles.tags}>
+                                {post.tagName.map(tag => (
+                                    <span className={styles.tag} key={tag}>
+                                    {tag}
+                                    </span>
+                                ))}
+                                </div>
+                            </li>
+                            </Link>
+                        </div>
+                        ))}
                     </ul>
                     {totalPosts > 0 && (
                     <div className={styles.pagination}>

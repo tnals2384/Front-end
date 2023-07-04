@@ -66,7 +66,6 @@ function App() {
         setPosts(updatedPosts);
       };
 
-      console.log(posts);
     return <Router>
         <Routes>
             <Route path="/" element={isLoggedIn ? <Home posts={posts}/> : <Navigate to="/login" />} />
