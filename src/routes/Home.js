@@ -62,6 +62,9 @@ const Home = () => {
             <div className={styles.fixedHeader}>
                 <Header />
                 <h1>고삼이님의 기록 💪🏻</h1>
+                
+            </div>
+            <div className={styles.container}>
                 <div className={styles.buttonContainer}>
                     <div className={styles.dropdown}>
                         <button className={styles.button}>기간</button>
@@ -97,8 +100,6 @@ const Home = () => {
                         </button>
                     ))}
                 </div>
-            </div>
-            <div className={styles.container}>
                 <div className={styles.postListContainer}>
                     <ul className={styles.postList}>
                     {filteredPosts.map(post => (

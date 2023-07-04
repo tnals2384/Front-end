@@ -14,43 +14,45 @@
 /*헤더 제외 전체를 포함하는 conatiner*/
 .container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     height: 100vh;
     margin-top: 200px;
-}
-
-.postListContainer {
+  }
+  
+  .postListContainer {
     display: flex;
     width: 65%;
     flex-direction: column;
     align-items: center;
-
-    margin-top: 50px;
-}
-
-.postList {
+    margin-top: 20;
+  }
+  
+  .postList {
     width: 100%;
     list-style: none;
     padding: 0;
-}
-
-.postListli {
+  }
+  
+  .postListli {
     padding: 10px;
     border-bottom: 1px solid #efefef;
     padding-bottom: 20px;
-}
-
-.buttonContainer {
-    margin-top: 70px;
-    margin-left: 18%;
+    margin-bottom: 20px; /* 각 항목 사이의 간격을 주기 위해 추가 */
+  }
+  
+  .buttonContainer {
     display: flex;
-}
-
-.dropdown {
+    width: 65%;
+    margin-top: 50px;
+    flex-wrap: wrap; /* 버튼들이 여러 줄로 나열되도록 설정 */
+  }
+  
+  .dropdown {
     position: relative;
-}
-
-.dropdownContent {
+  }
+  
+  .dropdownContent {
     display: none;
     position: absolute;
     background-color: #fff;
@@ -61,7 +63,7 @@
     z-index: 1;
     padding: 8px;
   }
-
+  
   .dropdownContent button {
     background-color: transparent;
     border: none;
@@ -74,28 +76,35 @@
     cursor: pointer;
   }
 
-/* 버튼을 눌렀을 때의 스타일 */
-.dropdownContent button:active {
-  background-color: #ccc;
-}
+ /* 태그 버튼들이 여러 줄로 나열되도록 설정 */
+.buttonContainer .button {
+    margin-bottom: 10px;
+  }
 
-.dropdown:hover .dropdownContent {
+
+  .dropdownContent button:active {
+    background-color: #ccc;
+  }
+  
+  .dropdown:hover .dropdownContent {
     display: block;
-}
-
-/*title과 duration을 포함하는 container*/
-.titleDuration {
+  }
+  
+  .titleDuration {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.tags {
+  }
+  
+  .tags {
     margin-top: 5px;
-}
-
-.tag {
+    display: flex;
+    flex-wrap: wrap; /* 태그들이 여러 줄로 나열되도록 설정 */
+  }
+  
+  .tag {
     margin-right: 7px;
+    margin-bottom: 7px; /* 태그들 사이의 간격을 주기 위해 추가 */
     border: 2px solid #adadad;
     border-radius: 20px;
     cursor: pointer;
@@ -104,8 +113,8 @@
     padding-right: 6px;
     font-size: 13px;
     color: #6f6f6f;
-}
-
+  }
+  
 .duration {
     margin-right: 10px;
     font-weight: bold;
