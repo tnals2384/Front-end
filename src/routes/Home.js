@@ -20,9 +20,6 @@ const Home = () => {
     const [totalPosts, setTotalPosts] = useState(0);
     
     const handlePageChange = (page) => {
-        if (page >= totalPages) {
-            return; // 다음 페이지가 없으면 클릭 이벤트 처리 중단
-        }
         setCurrentPage(page);
         window.scrollTo({ top: 0});
     };
@@ -56,9 +53,11 @@ const Home = () => {
           try {
             const params = selectedTags.map(tag => `tag=${encodeURIComponent(tag)}`);
             const query = params.join('&');
-            const url = `/api/v1/posts/tag?${query}`;
+            const url = `/api/v1/posts/tag?${query}&page=${currentPage}`;
             const response = await axios.get(url);
-            setTagPosts(response.data.result);
+            setTagPosts(response.data.result.pagePosts);
+            setTotalPages(response.data.result.totalPages);
+            setTotalPosts(response.data.result.totalPosts);
           } catch (error) {
             console.error(error);
           }
@@ -70,9 +69,8 @@ const Home = () => {
             // selectedTags가 비어있을 때에는 tagPosts를 초기화
             setTagPosts([]);
           }
-      }, [selectedTags]);
+      }, [selectedTags,currentPage]);
     
-      console.log(selectedTags)
     
     // 모달창 노출 여부 state
     const [modalOpen, setModalOpen] = useState(false);
@@ -81,6 +79,7 @@ const Home = () => {
     const showModal = () => {
         setModalOpen(true);
     };
+
     //tag 삭제
     const handleTagClick = tag => {
         if (selectedTags.includes(tag)) {
@@ -90,6 +89,7 @@ const Home = () => {
             // 선택되지 않은 태그인 경우 추가
             setSelectedTags([...selectedTags, tag]);
           }
+        setCurrentPage(0);
     };
 
     return (
@@ -122,6 +122,7 @@ const Home = () => {
                                 selectedTags={selectedTags}
                                 setSelectedTags={setSelectedTags}
                                 setModalOpen={setModalOpen}
+                                setCurrentPage={setCurrentPage}
                             />
                             )}
                     </div>
