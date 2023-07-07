@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Login from '../src/routes/Login';
 import Home from '../src/routes/Home';
 import Write from '../src/routes/Write';
 import PostDetail from './routes/PostDetail';
 import MyPage from '../src/routes/MyPage';
-
 import {
     BrowserRouter as Router,
     Routes,
@@ -13,7 +12,7 @@ import {
   } from "react-router-dom";
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [posts, setPosts]= useState( [
         {
             id:1,
@@ -67,7 +66,6 @@ function App() {
         setPosts(updatedPosts);
       };
 
-      console.log(posts);
     return <Router>
         <Routes>
             <Route path="/" element={isLoggedIn ? <Home posts={posts}/> : <Navigate to="/login" />} />
