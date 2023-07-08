@@ -1,21 +1,87 @@
-import React, { useState, useRef } from 'react';
+import React, { useState} from 'react';
 import Header from '../components/Header';
 import PostForm from '../components/PostForm';
 import ExperienceForm from '../components/ExperienceForm';
 import styles from '../styles/Write.module.css';
-
+import axios from 'axios';
 const Write = () => {
+    const [title, setTitle] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [jobTags, setJobTags] = useState([]);
+    const [abilityTags, setAbilityTags] = useState([]);
+    const [stackTags, setStackTags] = useState([]);
+
+    
     const fileInput = React.useRef(null);
 
     const [showAddButton, setShowAddButton] = useState(true);
-    const [experienceForms, setExperienceForms] = useState([
-        '활동을 하게 된 동기를 기록해주세요.',
-        '맡은 역할과 수행 내용을 기록해주세요.',
-        '힘들었던 점이 있었나요? 어떻게 극복하였나요?',
-        '느낀점 및 배운점을 기록해주세요.',
-    ]);
+    const [experiences, setExperiences] = useState([
+        { title: '활동을 하게 된 동기를 기록해주세요.', content: '' },
+        { title: '맡은 역할과 수행 내용을 기록해주세요.', content: '' },
+        { title: '힘들었던 점이 있었나요? 어떻게 극복하였나요?', content: '' },
+        { title: '느낀점 및 배운점을 기록해주세요.', content: '' },
+      ]);
+
+    //expereince update
+    const handleSaveExperience = (index, experience) => {
+    const updatedExperiences = [...experiences];
+    updatedExperiences[index] = experience;
+    setExperiences(updatedExperiences);
+    };
+
 
     const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const tags = 
+            [  
+                {
+                tagType: 'Job',
+                tagName: jobTags
+                },
+                {
+                    tagType: 'Stack',
+                    tagName: stackTags
+                },
+                {
+                    tagType: 'Ability',
+                    tagName: abilityTags
+                }
+            ];
+        
+        const createPostRequest = new FormData();
+
+        createPostRequest.append('title', title);
+        createPostRequest.append('beginAt', startDate+"T12:00:00");
+        createPostRequest.append('finishAt', endDate+"T12:00:00");
+        createPostRequest.append('tags', JSON.stringify(tags));
+        
+        const experiencesObj = {};
+        experiences.forEach(experience => {
+            experiencesObj[experience.title] = experience.content;
+        });
+        createPostRequest.append('experiences', JSON.stringify(experiencesObj));
+
+        const formDataEntries = createPostRequest.entries();
+        for (const [key, value] of formDataEntries) {
+        console.log(key, value);
+        }
+
+        try {
+            const response = await axios.post('/api/v1/posts', createPostRequest, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                  }
+            });
+            
+            console.log(response.data); // 서버로부터의 응답 데이터
+        } catch (error) {
+            console.error(error.response);
+        }
+    };
 
     const handleFileChange = event => {
         const files = Array.from(event.target.files);
@@ -27,14 +93,14 @@ const Write = () => {
     };
 
     // ExperienceForm 삭제
-    const handleRemoveExperienceForm = index => {
-        const newExperienceForms = [...experienceForms];
-        newExperienceForms.splice(index, 1);
-        setExperienceForms(newExperienceForms);
+    const handleRemoveExperience = index => {
+        const newExperiences = [...experiences];
+        newExperiences.splice(index, 1);
+        setExperiences(newExperiences);
     };
 
-    const handleAddExperienceForm = () => {
-        setExperienceForms(prevForms => [...prevForms, '']);
+    const handleAddExperience = () => {
+        setExperiences([...experiences, { title: '', content: '' }]);
         setShowAddButton(true);
     };
 
@@ -46,12 +112,19 @@ const Write = () => {
             </div>
             <div className={styles.writeContainer}>
                 <div className={styles.formContainer}>
-                    <PostForm />
-                    {experienceForms.map((experience, index) => (
+                    <PostForm title={title} setTitle={setTitle}
+                            startDate={startDate} setStartDate={setStartDate}
+                            endDate={endDate} setEndDate={setEndDate}
+                            jobTags={jobTags} setJobTags={setJobTags}
+                            abilityTags={abilityTags} setAbilityTags={setAbilityTags}
+                            stackTags={stackTags} setStackTags={setStackTags}
+                             />
+                    {experiences.map((experience, index) => (
                         <ExperienceForm
+                            onSave={experience => handleSaveExperience(index, experience)}
                             key={index}
-                            title={experience}
-                            onRemove={() => handleRemoveExperienceForm(index)}
+                            title={experience.title}
+                            onRemove={() => handleRemoveExperience(index)}
                         />
                     ))}
                     {showAddButton && (
@@ -59,7 +132,7 @@ const Write = () => {
                             내용 추가하기
                             <button
                                 className={styles.addButton}
-                                onClick={handleAddExperienceForm}
+                                onClick={handleAddExperience}
                             >
                                 +
                             </button>
@@ -95,7 +168,7 @@ const Write = () => {
                         </div>
                     )}
 
-                    <button className={styles.writeButton}>글쓰기</button>
+                    <button className={styles.writeButton} onClick={handleSubmit}>글쓰기</button>
                     <div className={styles.last}>PODA</div>
                 </div>
             </div>

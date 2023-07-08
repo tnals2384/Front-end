@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
 import styles from '../styles/Write.module.css';
 import TagInput from './TagInput';
 
 
-const PostForm = () => {
-    const [title, setTitle] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [jobTags, setJobTags] = useState([]);
-    const [abilityTags, setAbilityTags] = useState([]);
-    const [stackTags, setStackTags] = useState([]);
-
+const PostForm = ({title,setTitle,startDate,setStartDate
+                    ,endDate,setEndDate, jobTags,setJobTags
+                    ,abilityTags,setAbilityTags,stackTags,setStackTags}) => {
+    
     const handleTitleChange = e => {
         setTitle(e.target.value);
     };
@@ -65,7 +60,7 @@ const PostForm = () => {
                 <TagInput
                     tags={abilityTags}
                     setTags={setAbilityTags}
-                    tagType="키워드"
+                    tagType="핵심 역량"
                 />
                 <TagInput
                     tags={stackTags}
