@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/Write.module.css';
 
-const ExperienceForm = ({ title, onRemove,onSave}) => {
+const ExperienceForm = ({ title, onRemove, onSave}) => {
    
     const [exTitle,setExTitle] = useState(title);
     const [text, setText] = useState('');
@@ -18,7 +18,6 @@ const ExperienceForm = ({ title, onRemove,onSave}) => {
         onSave({ title: newTitle, content: text }); // 변경된 text를 onSave를 통해 전달
     };
     
-
     const characterCount = text.length;
 
     const handleRemove = () => {
