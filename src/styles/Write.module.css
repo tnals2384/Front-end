@@ -238,16 +238,39 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     padding-bottom: 20px;
 }
 
 .fileItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    padding: 10px;
     margin-bottom: 5px;
+}
+
+.fileName {
     background-color: #f7f7f7;
-    border-radius: 5px;
+    border-radius: 20px;
+    padding:10px;
+}
+
+.image {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 20px;
+}
+
+.fileRemoveButton {
+    padding-left: 20px;
+    margin-right: 20px;
+    font-size: 15px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    color: #718096;
+    cursor: pointer;
 }
 
 /*글쓰기 버튼*/
@@ -262,7 +285,11 @@
     color: white;
     font-weight: 700;
     font-size: 20px;
+    transition: background-color 0.2s;
 }
+.writeButton:active {
+    background-color: #914ea6;
+  }
 
 
 /*임시 Footer..*/

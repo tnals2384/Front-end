@@ -7,6 +7,8 @@ import axios from 'axios';
 
 
 const Write = () => {
+
+    //제목, 기간, tag
     const [title, setTitle] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -14,9 +16,7 @@ const Write = () => {
     const [abilityTags, setAbilityTags] = useState([]);
     const [stackTags, setStackTags] = useState([]);
 
-
-    /*내용 추가 버튼 show */
-    const [showAddButton, setShowAddButton] = useState(true);
+    //experiences 기본 질문 4개
     const [experiences, setExperiences] = useState([
         { title: '활동을 하게 된 동기를 기록해주세요.', content: '' },
         { title: '맡은 역할과 수행 내용을 기록해주세요.', content: '' },
@@ -31,19 +31,46 @@ const Write = () => {
         setExperiences(newExperiences);
     };
 
-
     //ExperienceForm 추가
-    const handleAddExperience = () => {
+    const handleAddExperience = e => {
+        e.preventDefault();
         setExperiences([...experiences, { title: '', content: '' }]);
-        setShowAddButton(true);
     };
     
-
-    //expereince update
+    //experience 변경 내용 저장
     const handleSaveExperience = (index, experience) => {
     const updatedExperiences = [...experiences];
     updatedExperiences[index] = experience;
     setExperiences(updatedExperiences);
+    };
+
+    //파일 첨부
+    const fileInput = React.useRef(null);
+
+    //선택된 파일
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+
+    //file 추가 버튼을 누를경우
+    const handleButtonClick = e => {
+        e.preventDefault();
+        fileInput.current.click();
+    };
+        
+    //파일을 추가할 경우
+    const handleFileChange = e => {
+        e.preventDefault();
+        const files = Array.from(e.target.files);
+        setSelectedFiles(prevSelectedFiles => [...prevSelectedFiles, ...files]);
+    };
+
+    //선택 파일을 선택 해제할 경우
+    const removeFile = index => {
+        setSelectedFiles(prevSelectedFiles => {
+        const updatedFiles = [...prevSelectedFiles];
+        updatedFiles.splice(index, 1);
+        return updatedFiles;
+        });
     };
 
 
@@ -86,7 +113,12 @@ const Write = () => {
         //formData에 추가
         const formData = new FormData();
         formData.append('createPostRequest', new Blob([JSON.stringify(createPostRequest)], {type: "application/json"}));
-      
+        
+         // 선택된 파일들을 formData에 리스트로 추가
+        selectedFiles.forEach((file, index) => {
+            formData.append('file', file);
+        });
+
         try {
             const response = await axios ({
                 method: 'post',
@@ -96,28 +128,13 @@ const Write = () => {
                     'Content-Type': `multipart/form-data`, // Content-Type을 반드시 이렇게 하여야 한다.
                   },
             });
+
             console.log(response.data); // 서버로부터의 응답 데이터
-        
         } catch (error) {
             console.error('creat post 요청 중 오류가 발생했습니다.', error);
         }   
     };
 
-
-    //파일 첨부
-    const fileInput = React.useRef(null);
-
-    //선택된 파일
-    const [selectedFiles, setSelectedFiles] = useState([]);
-
-    const handleFileChange = event => {
-        const files = Array.from(event.target.files);
-        setSelectedFiles(files);
-    };
-
-    const handleButtonClick = e => {
-        fileInput.current.click();
-    };
 
     return (
         <div>
@@ -126,7 +143,7 @@ const Write = () => {
                 <h1>소중한 경험을 기록해주세요 🥳</h1>
             </div>
             <div className={styles.writeContainer}>
-                <form className={styles.formContainer}  onSubmit={handleSubmit}>
+                <form className={styles.formContainer} onSubmit={handleSubmit}>
                     <PostForm title={title} setTitle={setTitle}
                             startDate={startDate} setStartDate={setStartDate}
                             endDate={endDate} setEndDate={setEndDate}
@@ -142,17 +159,15 @@ const Write = () => {
                             onRemove={() => handleRemoveExperience(index)}
                         />
                     ))}
-                    {showAddButton && (
-                        <div className={styles.add}>
-                            내용 추가하기
-                            <button
-                                className={styles.addButton}
-                                onClick={handleAddExperience}
-                            >
-                                +
-                            </button>
-                        </div>
-                    )}
+                    <div className={styles.add}>
+                        내용 추가하기
+                        <button
+                            className={styles.addButton}
+                            onClick={handleAddExperience}
+                        >
+                            +
+                        </button>
+                    </div>
 
                     <div className={styles.add}>
                         {' '}
@@ -173,11 +188,30 @@ const Write = () => {
                             style={{ display: 'none' }}
                         />
                     </div>
+
                     {selectedFiles.length > 0 && (
                         <div className={styles.fileList}>
-                            {selectedFiles.map((file, index) => (
+                            {selectedFiles.map((file, index) => ( 
                                 <div key={index} className={styles.fileItem}>
-                                    {file.name}
+                                    {file.type.includes('image/') && (
+                                       <div>
+                                            <img
+                                                src={URL.createObjectURL(file)}
+                                                alt={file.name}
+                                                className={styles.image}
+                                            />
+                                            <div className={styles.fileName}>{file.name}</div>
+                                        </div>
+                                    )}
+                                    {!file.type.includes('image/') && (
+                                        <div className={styles.fileName}>{file.name}</div>
+                                    )}
+                                    <button
+                                        className={styles.fileRemoveButton}
+                                        onClick={() => removeFile(index)}
+                                    >
+                                        X
+                                    </button>
                                 </div>
                             ))}
                         </div>

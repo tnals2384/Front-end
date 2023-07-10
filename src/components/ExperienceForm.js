@@ -3,26 +3,30 @@ import styles from '../styles/Write.module.css';
 
 const ExperienceForm = ({ title, onRemove, onSave}) => {
    
+    //expreince의 title과 textarea 내용
     const [exTitle,setExTitle] = useState(title);
     const [text, setText] = useState('');
 
-    const handleTextChange = event => {
-        const newText = event.target.value;
+
+    const handleTextChange = e => {
+        const newText = e.target.value;
         setText(newText);
         onSave({ title: exTitle, content: newText }); // 변경된 text를 onSave를 통해 전달
     };
 
-    const handleTitleChange = event => {
-        const newTitle = event.target.value;
+    const handleTitleChange = e => {
+        const newTitle = e.target.value;
         setExTitle(newTitle);
         onSave({ title: newTitle, content: text }); // 변경된 text를 onSave를 통해 전달
     };
     
-    const characterCount = text.length;
-
-    const handleRemove = () => {
+    const handleRemove = e => {
+        e.preventDefault();
         onRemove(); // 부모 컴포넌트로 삭제 요청 전달
     };
+
+    //text의 길이를 셈
+    const characterCount = text.length;
 
     return (
         <div className={styles.exContainer}>

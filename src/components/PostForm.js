@@ -1,7 +1,6 @@
 import styles from '../styles/Write.module.css';
 import TagInput from './TagInput';
 
-
 const PostForm = ({title,setTitle,startDate,setStartDate
                     ,endDate,setEndDate, jobTags,setJobTags
                     ,abilityTags,setAbilityTags,stackTags,setStackTags}) => {

@@ -19,10 +19,12 @@ const Home = () => {
     //총 post 수
     const [totalPosts, setTotalPosts] = useState(0);
     
+    //page가 바뀌면 화면을 top으로 이동
     const handlePageChange = (page) => {
         setCurrentPage(page);
         window.scrollTo({ top: 0});
     };
+    
     //최신순, 오래된순 버튼 선택시 set
     const handleOrderClick = (order) => {
         setOrderBy(order);
@@ -59,7 +61,7 @@ const Home = () => {
             setTotalPages(response.data.result.totalPages);
             setTotalPosts(response.data.result.totalPosts);
           } catch (error) {
-            console.error(error);
+                console.error('post 데이터를 가져오는 동안 오류가 발생했습니다.', error);
           }
         };
 
