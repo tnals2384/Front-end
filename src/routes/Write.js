@@ -100,7 +100,11 @@ const Write = () => {
         experiences.forEach((experience) => {
             experiencesObj[experience.title] = experience.content;
         });
-
+        // 필드가 비어있는지 확인
+        if (startDate === '' || endDate === '') {
+            alert('기간을 선택해주세요.'); 
+            return;
+        }
         //createPostRequst Dto 형식에 맞춤
         const createPostRequest = {
             title : title,

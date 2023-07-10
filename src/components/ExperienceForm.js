@@ -38,6 +38,7 @@ const ExperienceForm = ({ title, onRemove, onSave}) => {
                         placeholder="제목을 입력하세요"
                         value={exTitle}
                         onChange={handleTitleChange}
+                        required
                     />
                     <div className={styles.characterCount}>
                         {characterCount}자
@@ -51,6 +52,7 @@ const ExperienceForm = ({ title, onRemove, onSave}) => {
                 value={text}
                 onChange={handleTextChange}
                 placeholder="내용"
+                required
 
             />
         </div>
