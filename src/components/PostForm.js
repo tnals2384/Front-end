@@ -27,6 +27,7 @@ const PostForm = ({title,setTitle,startDate,setStartDate
                         type="text"
                         value={title}
                         onChange={handleTitleChange}
+                        required
                         placeholder="제목을 입력해주세요"
                     />
                 </div>
@@ -39,6 +40,7 @@ const PostForm = ({title,setTitle,startDate,setStartDate
                                 type="date"
                                 value={startDate}
                                 onChange={handleStartDateChange}
+                                required
                             />
                         </div>
                         <div className={styles.date}>
@@ -47,6 +49,7 @@ const PostForm = ({title,setTitle,startDate,setStartDate
                                 type="date"
                                 value={endDate}
                                 onChange={handleEndDateChange}
+                                required
                             />
                         </div>
                     </div>
