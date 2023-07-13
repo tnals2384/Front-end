@@ -7,6 +7,7 @@ import ExperienceContainer from '../components/ExperienceContainer';
 import PostUpdateModal from '../components/PostUpdateModal';
 import ExCreateForm from '../components/ExCreateForm';
 const PostDetail = () => {
+
     //url 파라미터로 id 찾아옴
     const { postId } = useParams();
     const navigate = useNavigate();
@@ -120,7 +121,7 @@ const PostDetail = () => {
             alert('기간을 선택해주세요.'); 
             return;
         }
-        //createPostRequst Dto 형식에 맞춤
+        //updatePostRequst Dto 형식에 맞춤
         const updatePostRequest = {
             title : updatedData.title,
             beginAt : updatedData.startDate+"T12:00:00",
@@ -167,13 +168,103 @@ const PostDetail = () => {
     };
 
 
+    //api에 experience 추가 요청
+    const createExperienceApi = async (postId, newExperience) => {
+       
+       //updateExperiencetRequst Dto 형식에 맞춤
+       const createExperienceRequest = {
+           title : newExperience.title,
+           content : newExperience.content
+       }
+       //formData에 추가
+       const formData = new FormData();
+       formData.append('createExperienceRequest', new Blob([JSON.stringify(createExperienceRequest)], {type: "application/json"}));
+
+       try {
+           const response = await fetch(`/api/v1/posts/${postId}/experiences`, {
+               method: 'POST',
+               body: formData,
+           });
+           const data = await response.json();
+           // 업데이트에 대한 응답 처리
+           console.log(data);
+       } catch (error) {
+           console.error('경험 추가 중 오류가 발생했습니다.', error);
+       }
+   };
     
+    //api에 experience update 요청
+    const updateExperienceApi = async (updateExperience) => {
+       
+        const experienceId = updateExperience.experienceId;
+        //updateExperienceRequst Dto 형식에 맞춤
+        const updateExperienceRequest = {
+            title : updateExperience.title,
+            content : updateExperience.content
+        }
+        //formData에 추가
+        const formData = new FormData();
+        formData.append('updateExperienceRequest', new Blob([JSON.stringify(updateExperienceRequest)], {type: "application/json"}));
+ 
+        try {
+            const response = await fetch(`/api/v1/experiences/${experienceId}`, {
+                method: 'PUT',
+                body: formData,
+            });
+            const data = await response.json();
+            // 업데이트에 대한 응답 처리
+            console.log(data);
+        } catch (error) {
+            console.error('경험 Update 중 오류가 발생했습니다.', error);
+        }
+    };
+
+
+    const deleteExperienceApi = async (experienceId) => {
+        try {
+          const response = await fetch(`/api/v1/experiences/${experienceId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          const data = await response.json();
+          // 삭제에 대한 응답 처리
+          console.log(data);
+        } catch (error) {
+          console.error('경험 삭제 중 오류가 발생했습니다.', error);
+        }
+    };
+ 
     //경험 추가 form 보이기
     const [showForm, setShowForm] = useState(false);
 
     //경험 추가
     const handleAddExperience = newExperience => {
         setExperiences([...experiences, newExperience]);
+
+        //api 요청
+        createExperienceApi(postId, newExperience);
+        setShowForm(false);
+    };
+
+    //경험 update
+    const handleUpdateExperience = updateExperience => {
+
+        const updatedExperiences = experiences.map((experience) => {
+            if (experience.experienceId === updateExperience.experienceId) {
+              return {
+                ...experience,
+                title: updateExperience.title,
+                content: updateExperience.content,
+              };
+            }
+            return experience;
+        });
+        
+        setExperiences(updatedExperiences);
+        //api 요청
+        updateExperienceApi(updateExperience);
         setShowForm(false);
     };
 
@@ -183,12 +274,14 @@ const PostDetail = () => {
             experience => experience.experienceId !== experienceId,
         );
         setExperiences(updatedExperiences);
+        deleteExperienceApi(experienceId);
     };
 
     const handleFileChange = event => {
         const files = Array.from(event.target.files);
         setSelectedFiles(files);
     };
+
     const handleButtonClick = e => {
         fileInput.current.click();
     };
@@ -196,6 +289,7 @@ const PostDetail = () => {
     const handleDeleteFile = () => {
         setSelectedFiles([]);
     };
+    
 
 
 
@@ -269,9 +363,8 @@ const PostDetail = () => {
                     {experiences.map(experience => (
                         <ExperienceContainer
                             key={experience.experienceId}
-                            experienceId={experience.experienceId}
-                            title={experience.title}
-                            content={experience.content}
+                            experience={experience}
+                            onUpdate={handleUpdateExperience}
                             onDelete={handleDeleteExperience}
                         />
                     ))}
@@ -288,7 +381,6 @@ const PostDetail = () => {
                     ) : (
                         <ExCreateForm
                             experiences={experiences}
-                            setExperiences={setExperiences}
                             onAddExperience={handleAddExperience}
                         />
                     )}
