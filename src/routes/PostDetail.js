@@ -6,6 +6,7 @@ import styles from '../styles/Detail.module.css';
 import ExperienceContainer from '../components/ExperienceContainer';
 import PostUpdateModal from '../components/PostUpdateModal';
 import ExCreateForm from '../components/ExCreateForm';
+
 const PostDetail = () => {
 
     //url 파라미터로 id 찾아옴
@@ -24,9 +25,7 @@ const PostDetail = () => {
     const [experiences, setExperiences] = useState([]);
     //file
     const fileInput = React.useRef(null);
-    const [selectedFiles, setSelectedFiles] = useState([]);
-
-
+    const [files,setFiles] = useState([]);
     //api get요청으로 orderBy에 따라 posts목록 받아오기
     useEffect(() => {
         fetch(`/api/v1/posts/${postId}`)
@@ -60,7 +59,7 @@ const PostDetail = () => {
                 setJobTags(jobTags);
                 setAbilityTags(abilityTags);
                 setStackTags(stackTags);
-                setSelectedFiles(files);
+                setFiles(files);
             })
             .catch(error => {
             console.error('post 데이터를 가져오는 동안 오류가 발생했습니다.', error);
@@ -277,19 +276,43 @@ const PostDetail = () => {
         deleteExperienceApi(experienceId);
     };
 
-    const handleFileChange = event => {
-        const files = Array.from(event.target.files);
-        setSelectedFiles(files);
-    };
+    //기존 file 삭제
+    const handleDeleteFile = e => {
+        e.preventDefault();
+    }
 
+    //file 추가 버튼을 누를경우
     const handleButtonClick = e => {
         fileInput.current.click();
     };
-
-    const handleDeleteFile = () => {
-        setSelectedFiles([]);
+        
+    //파일을 추가할 경우
+    const handleFileChange = e => {
+        const selectedfiles = Array.from(e.target.files);
+        uploadFilesApi(selectedfiles);
     };
-    
+
+
+    //파일 업로드 api 요청
+    const uploadFilesApi = async(selectedfiles) => {
+         //formData에 추가
+       const formData = new FormData();
+        // 선택된 파일들을 formData에 리스트로 추가
+        selectedfiles.forEach((file) => {
+            formData.append('file', file);
+        });
+       try {
+           const response = await fetch(`/api/v1/posts/${postId}/files`, {
+               method: 'PUT',
+               body: formData,
+           });
+           const data = await response.json();
+           console.log(data);
+
+       } catch (error) {
+           console.error('파일 update 중 오류가 발생했습니다.', error);
+       }
+    }
 
 
 
@@ -385,42 +408,24 @@ const PostDetail = () => {
                         />
                     )}
 
-                    {selectedFiles.length > 0 ? (
-                    <div className={styles.exContainer}>
-                        <div className={styles.titleContainer}>
-                            <div className={styles.exTitle}>파일</div>
-                            <div className={styles.buttonContainer}>
-                                <button
-                                className={styles.deleteButton}
-                                onClick={handleDeleteFile}
-                                >
-                                <span>삭제</span>
-                                </button>
-                                <button
-                                className={styles.updateButton}
-                                onClick={handleButtonClick}
-                                >
-                                수정
-                                </button>
-                                <input
-                                id="file-upload"
-                                type="file"
-                                ref={fileInput}
-                                multiple={true}
-                                onChange={handleFileChange}
-                                style={{ display: 'none' }}
-                                />
-                            </div>
-                        </div>
 
+                    <div className={styles.exContainer}>
                         <div className={styles.fileList}>
-                        {selectedFiles.map((file, index) => {
+                        {files.map((file, index) => {
                             if (file.filePath.endsWith('.png') || file.filePath.endsWith('.jpg') || file.filePath.endsWith('.jpeg') || file.filePath.endsWith('.gif')) {
                             return (
                                 <div
                                 key={index}
                                 className={styles.fileContainer}
                                 >
+                                <div className={styles.buttonContainer}>
+                                    <button
+                                    className={styles.deleteButton}
+                                    onClick={handleDeleteFile}
+                                    >
+                                    <span>삭제</span>
+                                    </button>
+                                </div>
                                 <img
                                     src={file.filePath}
                                     alt={file.fileName}
@@ -435,6 +440,14 @@ const PostDetail = () => {
                                 key={index}
                                 className={styles.fileContainer}
                                 >
+                                <div className={styles.buttonContainer}>
+                                    <button
+                                    className={styles.deleteButton}
+                                    onClick={handleDeleteFile}
+                                    >
+                                    <span>삭제</span>
+                                    </button>
+                                </div>
                                 <a
                                     href={file.filePath}
                                     target="_blank"
@@ -448,27 +461,25 @@ const PostDetail = () => {
                             }
                         })}
                         </div>
+                        <div className={styles.add}>
+                            파일 추가하기
+                            <button
+                            className={styles.addButton}
+                            onClick={handleButtonClick}
+                            >
+                            <input
+                            id="file-upload"
+                            type="file"
+                            ref={fileInput}
+                            multiple={true}
+                            onChange={handleFileChange}
+                            className={styles.addButton}
+                            style={{ display: 'none' }}
+                            />
+                            +
+                            </button>
+                        </div>
                     </div>
-                    ) : (
-                    <div className={styles.add}>
-                        파일 첨부하기
-                        <button
-                        className={styles.addButton}
-                        onClick={handleButtonClick}
-                        >
-                        +
-                        </button>
-                        <input
-                        id="file-upload"
-                        type="file"
-                        ref={fileInput}
-                        multiple={true}
-                        onChange={handleFileChange}
-                        className={styles.addButton}
-                        style={{ display: 'none' }}
-                        />
-                    </div>
-                    )}
 
                     <a
                         href="https://www.flaticon.com/kr/free-icons/"
