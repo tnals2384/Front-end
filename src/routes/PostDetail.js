@@ -187,6 +187,13 @@ const PostDetail = () => {
            const data = await response.json();
            // 업데이트에 대한 응답 처리
            console.log(data);
+           const newEx = {
+            experienceId: data.result.experienceId,
+            title :newExperience.title,
+            content: newExperience.content
+           }
+           setExperiences( prev => [...prev, newEx]);
+           
        } catch (error) {
            console.error('경험 추가 중 오류가 발생했습니다.', error);
        }
@@ -240,7 +247,6 @@ const PostDetail = () => {
 
     //경험 추가
     const handleAddExperience = newExperience => {
-        setExperiences([...experiences, newExperience]);
 
         //api 요청
         createExperienceApi(postId, newExperience);
@@ -403,7 +409,6 @@ const PostDetail = () => {
                         </div>
                     ) : (
                         <ExCreateForm
-                            experiences={experiences}
                             onAddExperience={handleAddExperience}
                         />
                     )}
