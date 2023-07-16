@@ -314,6 +314,11 @@ const PostDetail = () => {
            });
            const data = await response.json();
            console.log(data);
+           
+           const getResponse = await fetch(`/api/v1/posts/${postId}/files`);
+           const getData = await getResponse.json();
+           console.log(getData);
+           setFiles(getData);           
 
        } catch (error) {
            console.error('파일 update 중 오류가 발생했습니다.', error);
@@ -466,7 +471,8 @@ const PostDetail = () => {
                             }
                         })}
                         </div>
-                        <div className={styles.add}>
+                    </div>
+                    <div className={styles.add}>
                             파일 추가하기
                             <button
                             className={styles.addButton}
@@ -484,7 +490,6 @@ const PostDetail = () => {
                             +
                             </button>
                         </div>
-                    </div>
 
                     <a
                         href="https://www.flaticon.com/kr/free-icons/"
