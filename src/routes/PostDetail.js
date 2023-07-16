@@ -37,11 +37,7 @@ const PostDetail = () => {
                 setStartDate(data.result.beginAt);
                 setEndDate(data.result.finishAt);
                 // 경험 데이터 추출
-                const experiences = getExperienceResponses.map(experience => ({
-                    experienceId: experience.experienceId,
-                    title: experience.title,
-                    content: experience.content
-                }));
+                const experiences = getExperienceResponses;
 
                 // 태그 데이터 추출
                 const jobTags = getTagResponses.find(tag => tag.tagType === "JOB")?.tagName || [];
@@ -49,10 +45,7 @@ const PostDetail = () => {
                 const stackTags = getTagResponses.find(tag => tag.tagType === "STACK")?.tagName || [];
 
                 // 파일 데이터 추출
-                const files = getFileResponses.map(file => ({
-                    fileName: file.fileName,
-                    filePath: file.filePath
-                }));
+                const files = getFileResponses;
 
                 // 추출한 데이터를 상태에 설정
                 setExperiences(experiences);
@@ -283,8 +276,12 @@ const PostDetail = () => {
     };
 
     //기존 file 삭제
-    const handleDeleteFile = e => {
-        e.preventDefault();
+    const handleDeleteFile = fileId => {
+        const updatedFiles = files.filter(
+            file => file.fileId !==fileId
+        );
+        setFiles(updatedFiles);
+        deleteFileApi(fileId);
     }
 
     //file 추가 버튼을 누를경우
@@ -318,13 +315,28 @@ const PostDetail = () => {
            const getResponse = await fetch(`/api/v1/posts/${postId}/files`);
            const getData = await getResponse.json();
            console.log(getData);
-           setFiles(getData);           
+           setFiles(getData.result);           
 
        } catch (error) {
            console.error('파일 update 중 오류가 발생했습니다.', error);
        }
     }
 
+    const deleteFileApi = async(fileId) => {
+        try {
+            const response = await fetch(`/api/v1/files/${fileId}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const data = await response.json();
+            // 삭제에 대한 응답 처리
+            console.log(data);
+          } catch (error) {
+            console.error('파일 삭제 중 오류가 발생했습니다.', error);
+          }
+    }
 
 
     return (
@@ -431,7 +443,7 @@ const PostDetail = () => {
                                 <div className={styles.buttonContainer}>
                                     <button
                                     className={styles.deleteButton}
-                                    onClick={handleDeleteFile}
+                                    onClick={() => handleDeleteFile(file.fileId)}
                                     >
                                     <span>삭제</span>
                                     </button>
@@ -453,7 +465,7 @@ const PostDetail = () => {
                                 <div className={styles.buttonContainer}>
                                     <button
                                     className={styles.deleteButton}
-                                    onClick={handleDeleteFile}
+                                    onClick={() => handleDeleteFile(file.fileId)}
                                     >
                                     <span>삭제</span>
                                     </button>
