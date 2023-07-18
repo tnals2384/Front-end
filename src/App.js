@@ -14,7 +14,6 @@ import {
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     
-
     return <Router>
         <Routes>
             <Route path="/" element={isLoggedIn ? <Home/> : <Navigate to="/login" />} />
