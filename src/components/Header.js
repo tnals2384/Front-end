@@ -15,7 +15,7 @@ const Header = () => {
                     <Link to="/write" className={styles.writeButton}>
                         글쓰기
                     </Link>
-                    <Link to="mypage">
+                    <Link to="/mypage">
                     <button className={styles.mypageButton}>마이페이지</button>
                     </Link>
                     <button className={styles.loginButton}>로그아웃</button>

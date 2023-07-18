@@ -97,14 +97,15 @@
   }
   
   .tags {
-    margin-top: 5px;
+    margin-top: 3px;
     display: flex;
-    flex-wrap: wrap; /* 태그들이 여러 줄로 나열되도록 설정 */
+    flex-wrap: wrap;
+    align-items: center;
   }
   
   .tag {
     margin-right: 7px;
-    margin-bottom: 7px; /* 태그들 사이의 간격을 주기 위해 추가 */
+    margin-bottom: 7px;
     border: 2px solid #adadad;
     border-radius: 20px;
     cursor: pointer;
@@ -115,6 +116,30 @@
     color: #6f6f6f;
   }
   
+  .buttonContainer {
+    margin-right: 2%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: auto;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .recycle {
+    margin-right: 7px;
+    margin-bottom: 7px;
+    border: 2px solid #4f4f4f;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 15px;
+    color: #2e2e2e;
+    background: #eeeeee;
+  }
+
 .duration {
     margin-right: 10px;
     font-weight: bold;
@@ -163,7 +188,7 @@ a {
     background-color: #fff;
     color: #333;
   }
-  .disabled {
+.disabled {
     background-color: #dcdcdc;
-  }
+}
   
