@@ -71,11 +71,24 @@ const Home = () => {
     }, [selectedTags, currentPage, posts]);
     
 
+    const [nickname, setNickname] = useState('닉네임');
+  
+    useEffect(() => {
+      fetch(`/api/v1/mypages`)
+        .then(response => response.json())
+        .then(data => {
+          setNickname(data.result.name);
+        })
+        .catch(error => {
+          console.error('login user 데이터를 가져오는 동안 오류가 발생했습니다.', error);
+        });
+    });
+
     return (
         <div>
             <div className={styles.fixedHeader}>
                 <Header />
-                <h1>고삼이님의 기록 💪🏻</h1>
+                <h1>{nickname}님의 기록 💪🏻</h1>
                 
             </div>
             <div className={styles.container}>
