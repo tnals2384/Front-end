@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import styles from '../styles/Detail.module.css';
-import ExperienceContainer from '../components/ExperienceContainer';
-import PostUpdateModal from '../components/PostUpdateModal';
-import ExCreateForm from '../components/ExCreateForm';
+import ExperienceList from '../components/Experience/ExperienceList';
+import PostInfo from '../components/Post/PostInfo';
+import FileList from '../components/File/FileList';
+import FileUploader from '../components/File/FileUploader';
 import { getPost, updatePost, deletePost } from '../apis/PostAPI'; // PostAPI에서 함수를 import
 import { addExperience, updateExperience, deleteExperience } from '../apis/ExperienceAPI'; // ExperienceAPI에서 함수를 import
 import { uploadFiles, deleteFile, getFiles } from '../apis/FileAPI'; // FileAPI에서 함수를 import
@@ -15,7 +16,8 @@ const PostDetail = () => {
     //url 파라미터로 id 찾아옴
     const { postId } = useParams();
     const navigate = useNavigate();
-    //post
+
+    //postInfo
     const [post, setPost] = useState({
         title: '',
         startDate: '',
@@ -24,11 +26,9 @@ const PostDetail = () => {
         abilityTags: [],
         stackTags: [],
       });
-
-    //experience
+    //experiences
     const [experiences, setExperiences] = useState([]);
-    //file
-    const fileInput = React.useRef(null);
+    //files
     const [files,setFiles] = useState([]);
 
 
@@ -114,8 +114,6 @@ const PostDetail = () => {
     };
 
 
-    //경험 추가 form 보이기
-    const [showForm, setShowForm] = useState(false);
 
     // 경험 추가
     const handleAddExperience = (newExperience) => {
@@ -133,7 +131,6 @@ const PostDetail = () => {
         .catch((error) => {
             console.error('경험 추가 중 오류가 발생했습니다.', error);
         });
-        setShowForm(false);
     };
     
     // 경험 업데이트
@@ -159,7 +156,6 @@ const PostDetail = () => {
         .catch((error) => {
             console.error('경험 업데이트 중 오류가 발생했습니다.', error);
         });
-        setShowForm(false);
     };
 
 
@@ -177,14 +173,9 @@ const PostDetail = () => {
         });
     };
 
-    // 파일 업로드 버튼을 누를 경우
-    const handleButtonClick = () => {
-        fileInput.current.click();
-    };
-    
+
     // 파일 추가
-    const handleFileChange = (e) => {
-        const selectedFiles = Array.from(e.target.files);
+    const handleFileChange = (selectedFiles) => {
         uploadFiles(postId, selectedFiles)
             .then((data) => {
             if (data) {
@@ -225,163 +216,26 @@ const PostDetail = () => {
             </div>
             <div className={styles.container}>
                 <div className={styles.postContainer}>
-                    <div className={styles.postInfo}>
-                        <div className={styles.titleLine}>
-                            <h1 className={styles.title}>{post.title}</h1>
-                            <button
-                                className={styles.postDelete}
-                                onClick={() => handleDeleteClick(postId)}
-                            >
-                                글 삭제
-                            </button>
-                            <img
-                                src="/setting.png"
-                                alt="세팅 이미지"
-                                className={styles.setting}
-                                onClick={showModal}
-                            />
-                            {modalOpen && (
-                                <PostUpdateModal
-                                   initData={post}
-                                    onUpdate={handleUpdate}
-                                    setModalOpen={setModalOpen}
-                                />
-                            )}
-                        </div>
-                        <span className={styles.duration}>
-                            {post.startDate} ~ {post.endDate}
-                        </span>
-                        <div className={styles.tagColumn}>
-                            <strong className={styles.label}>관련 직무</strong>
-                            <ul className={styles.tagContainer}>
-                                {post.jobTags.map(tag => (
-                                    <li className={styles.tag} key={tag}>
-                                        {tag}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className={styles.tagColumn}>
-                            <strong className={styles.label}>핵심 역량</strong>
-                            <ul className={styles.tagContainer}>
-                                {post.abilityTags.map(tag => (
-                                    <li className={styles.tag} key={tag}>
-                                        {tag}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className={styles.tagColumn}>
-                            <strong className={styles.label}>
-                                사용한 기술
-                            </strong>
-                            <ul className={styles.tagContainer}>
-                                {post.stackTags.map(tag => (
-                                    <li className={styles.tag} key={tag}>
-                                        {tag}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+                    <PostInfo
+                        post={post}
+                        postId={postId}
+                        onDeleteClick={handleDeleteClick}
+                        onSettingsClick={showModal}
+                        modalOpen={modalOpen}
+                        setModalOpen={setModalOpen}
+                        handleUpdate={handleUpdate}
+                    />
 
-                    {experiences.map(experience => (
-                        <ExperienceContainer
-                            key={experience.experienceId}
-                            experience={experience}
-                            onUpdate={handleUpdateExperience}
-                            onDelete={handleDeleteExperience}
-                        />
-                    ))}
-                    {!showForm ? (
-                        <div className={styles.add}>
-                            내용 추가하기
-                            <button
-                                className={styles.addButton}
-                                onClick={() => setShowForm(!showForm)}
-                            >
-                                +
-                            </button>
-                        </div>
-                    ) : (
-                        <ExCreateForm
-                            onAddExperience={handleAddExperience}
-                        />
-                    )}
+                    <ExperienceList
+                        experiences={experiences}
+                        onAddExperience={handleAddExperience}
+                        onUpdateExperience={handleUpdateExperience}
+                        onDeleteExperience={handleDeleteExperience}
+                    />
 
-
-                    <div className={styles.exContainer}>
-                        <div className={styles.fileList}>
-                        {files.map((file, index) => {
-                            if (file.filePath.endsWith('.png') || file.filePath.endsWith('.jpg') || file.filePath.endsWith('.jpeg') || file.filePath.endsWith('.gif')) {
-                            return (
-                                <div
-                                key={index}
-                                className={styles.fileContainer}
-                                >
-                                <div className={styles.buttonContainer}>
-                                    <button
-                                    className={styles.deleteButton}
-                                    onClick={() => handleDeleteFile(file.fileId)}
-                                    >
-                                    <span>삭제</span>
-                                    </button>
-                                </div>
-                                <img
-                                    src={file.filePath}
-                                    alt={file.fileName}
-                                    className={styles.image}
-                                />
-                                <div className={styles.fileName}>{file.fileName}</div>
-                                </div>
-                            );
-                            } else {
-                            return (
-                                <div
-                                key={index}
-                                className={styles.fileContainer}
-                                >
-                                <div className={styles.buttonContainer}>
-                                    <button
-                                    className={styles.deleteButton}
-                                    onClick={() => handleDeleteFile(file.fileId)}
-                                    >
-                                    <span>삭제</span>
-                                    </button>
-                                </div>
-                                <a
-                                    href={file.filePath}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.fileName}
-                                >
-                                    {file.fileName}
-                                </a>
-                                </div>
-                            );
-                            }
-                        })}
-                        </div>
-                    </div>
-                    <div className={styles.add}>
-                            파일 추가하기
-                            <button
-                            className={styles.addButton}
-                            onClick={handleButtonClick}
-                            >
-                            <input
-                            id="file-upload"
-                            type="file"
-                            ref={fileInput}
-                            multiple={true}
-                            onChange={handleFileChange}
-                            className={styles.addButton}
-                            style={{ display: 'none' }}
-                            />
-                            +
-                            </button>
-                        </div>
-
+                    <FileList files={files} onDeleteFile={handleDeleteFile} />
+                    <FileUploader onFileChange={handleFileChange} />
+                    
                     <a
                         href="https://www.flaticon.com/kr/free-icons/"
                         title="기어 아이콘"

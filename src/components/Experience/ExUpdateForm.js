@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 
-import styles from '../styles/Detail.module.css';
+import styles from '../../styles/Detail.module.css';
 
 
 //단일조회에서 exprience update를 위한 form

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // 게시물 작성 API 요청
-export const createPost = async (postData, selectedFiles) => {
+export const createPost = async (postData, experiences, selectedFiles) => {
   const tags = [
     {
       tagType: 'Job',
@@ -18,7 +18,7 @@ export const createPost = async (postData, selectedFiles) => {
   ];
 
   const experiencesObj = {};
-  postData.experiences.forEach((experience) => {
+    experiences.forEach((experience) => {
     experiencesObj[experience.title] = experience.content;
   });
 

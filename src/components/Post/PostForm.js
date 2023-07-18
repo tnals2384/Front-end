@@ -1,20 +1,23 @@
-import styles from '../styles/Write.module.css';
-import TagInput from './TagInput';
+import styles from '../../styles/Write.module.css';
+import TagInput from '../Tag/TagInput';
 
-const PostForm = ({title,setTitle,startDate,setStartDate
-                    ,endDate,setEndDate, jobTags,setJobTags
-                    ,abilityTags,setAbilityTags,stackTags,setStackTags}) => {
+const PostForm = ({post,setPost}) => {
     
+    const { title, startDate, endDate } = post;
+
     const handleTitleChange = e => {
-        setTitle(e.target.value);
+        // post 상태의 title 변경
+        setPost(prevPost => ({ ...prevPost, title: e.target.value }));
     };
 
     const handleStartDateChange = e => {
-        setStartDate(e.target.value);
+        // post 상태의 startDate 변경
+        setPost(prevPost => ({ ...prevPost, startDate: e.target.value }));
     };
 
     const handleEndDateChange = e => {
-        setEndDate(e.target.value);
+        // post 상태의 endDate 변경
+        setPost(prevPost => ({ ...prevPost, endDate: e.target.value }));
     };
 
     return (
@@ -55,18 +58,18 @@ const PostForm = ({title,setTitle,startDate,setStartDate
                     </div>
                 </div>
                 <TagInput
-                    tags={jobTags}
-                    setTags={setJobTags}
+                    tags={post.jobTags}
+                    setTags={tags => setPost(prevPost => ({ ...prevPost, jobTags: tags }))}
                     tagType="관련 직무"
                 />
                 <TagInput
-                    tags={abilityTags}
-                    setTags={setAbilityTags}
+                    tags={post.abilityTags}
+                    setTags={tags => setPost(prevPost => ({ ...prevPost, abilityTags: tags }))}
                     tagType="핵심 역량"
                 />
                 <TagInput
-                    tags={stackTags}
-                    setTags={setStackTags}
+                    tags={post.stackTags}
+                    setTags={tags => setPost(prevPost => ({ ...prevPost, stackTags: tags }))}
                     tagType="사용 기술"
                 />
             </div>

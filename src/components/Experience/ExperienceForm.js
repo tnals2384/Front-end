@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../styles/Write.module.css';
+import styles from '../../styles/Write.module.css';
 
 const ExperienceForm = ({ title, onRemove, onSave}) => {
    

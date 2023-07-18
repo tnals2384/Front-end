@@ -2,21 +2,25 @@ import React, { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Header from '../components/Header';
-import PostForm from '../components/PostForm';
-import ExperienceForm from '../components/ExperienceForm';
+import PostForm from '../components/Post/PostForm';
+import ExperienceForm from '../components/Experience/ExperienceForm';
+import FileUploader from '../components/File/FileUploader';
 import styles from '../styles/Write.module.css';
 import {createPost } from '../apis/PostAPI';
 
 const Write = () => {
     const navigate = useNavigate();
 
-    //제목, 기간, tag
-    const [title, setTitle] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [jobTags, setJobTags] = useState([]);
-    const [abilityTags, setAbilityTags] = useState([]);
-    const [stackTags, setStackTags] = useState([]);
+
+    //postInfo
+    const [post, setPost] = useState({
+        title: '',
+        startDate: '',
+        endDate: '',
+        jobTags: [],
+        abilityTags: [],
+        stackTags: [],
+    });
 
     //experiences 기본 질문 4개
     const [experiences, setExperiences] = useState([
@@ -46,24 +50,13 @@ const Write = () => {
     setExperiences(updatedExperiences);
     };
 
-    //파일 첨부
-    const fileInput = React.useRef(null);
-
     //선택된 파일
     const [selectedFiles, setSelectedFiles] = useState([]);
 
-
-    //file 추가 버튼을 누를경우
-    const handleButtonClick = e => {
-        e.preventDefault();
-        fileInput.current.click();
-    };
         
     //파일을 추가할 경우
-    const handleFileChange = e => {
-        e.preventDefault();
-        const files = Array.from(e.target.files);
-        setSelectedFiles(prevSelectedFiles => [...prevSelectedFiles, ...files]);
+    const handleFileChange = (selectedFiles) => {
+        setSelectedFiles(prevSelectedFiles => [...prevSelectedFiles, ...selectedFiles]);
     };
 
     //선택 파일을 선택 해제할 경우
@@ -79,17 +72,10 @@ const Write = () => {
     // 전체 form 제출
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
         const response = await createPost(
-            {
-            title: title,
-            startDate: startDate,
-            endDate: endDate,
-            jobTags: jobTags,
-            abilityTags: abilityTags,
-            stackTags: stackTags,
-            experiences: experiences,
-            },
+            post, experiences ,
             selectedFiles
         );
         
@@ -114,13 +100,8 @@ const Write = () => {
             </div>
             <div className={styles.writeContainer}>
                 <form className={styles.formContainer} onSubmit={handleSubmit}>
-                    <PostForm title={title} setTitle={setTitle}
-                            startDate={startDate} setStartDate={setStartDate}
-                            endDate={endDate} setEndDate={setEndDate}
-                            jobTags={jobTags} setJobTags={setJobTags}
-                            abilityTags={abilityTags} setAbilityTags={setAbilityTags}
-                            stackTags={stackTags} setStackTags={setStackTags}
-                             />
+                    <PostForm post={post} setPost={setPost}/>
+
                     {experiences.map((experience, index) => (
                         <ExperienceForm
                             onSave={experience => handleSaveExperience(index, experience)}
@@ -139,26 +120,7 @@ const Write = () => {
                         </button>
                     </div>
 
-                    <div className={styles.add}>
-                        {' '}
-                        파일 첨부하기
-                        <button
-                            className={styles.addButton}
-                            onClick={handleButtonClick}
-                        >
-                            +
-                        </button>
-                        <input
-                            id="file-upload"
-                            type="file"
-                            ref={fileInput}
-                            multiple={true}
-                            onChange={handleFileChange}
-                            className={styles.addButton}
-                            style={{ display: 'none' }}
-                        />
-                    </div>
-
+                    <FileUploader onFileChange={handleFileChange} />
                     {selectedFiles.length > 0 && (
                         <div className={styles.fileList}>
                             {selectedFiles.map((file, index) => ( 
@@ -186,7 +148,6 @@ const Write = () => {
                             ))}
                         </div>
                     )}
-
                     <button className={styles.writeButton} type="submit">글쓰기</button>
                     <div className={styles.last}>PODA</div>
                 </form>

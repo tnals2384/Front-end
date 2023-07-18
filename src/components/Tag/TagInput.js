@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../styles/Write.module.css';
+import styles from '../../styles/Write.module.css';
 
 const TagInput = ({ tags, setTags, tagType }) => {
     

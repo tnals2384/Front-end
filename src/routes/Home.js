@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../styles/Home.module.css';
-import Modal from '../components/Modal';
+import TagModal from '../components/Tag/TagModal';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
 import { getPosts } from '../apis/PostAPI';
@@ -117,7 +117,7 @@ const Home = () => {
                             전체
                         </button>
                         {modalOpen && (
-                            <Modal
+                            <TagModal
                                 selectedTags={selectedTags}
                                 setSelectedTags={setSelectedTags}
                                 setModalOpen={setModalOpen}
