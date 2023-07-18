@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '../styles/Write.module.css';
 
 const TagInput = ({ tags, setTags, tagType }) => {
+    
     const [tagInput, setTagInput] = useState('');
     const [showTagInput, setShowTagInput] = useState(false);
     const inputRef = useRef(null); // 입력 창에 대한 참조 생성

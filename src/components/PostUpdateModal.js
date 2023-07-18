@@ -1,53 +1,31 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from '../styles/Modal.module.css';
 import TagInput from './TagInput';
 
 
 //단일 조회화면에서 Post 정보들을 수정하는 Modal
 const PostUpdateModal = ({
-    title,
-    setTitle,
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
-    jobTags,
-    setJobTags,
-    abilityTags,
-    setAbilityTags,
-    stackTags,
-    setStackTags,
+    initData,
     onUpdate,
-    setModalOpen,
-}) => {
+    setModalOpen }) => {
     
+    const [updatedData, setUpdatedData] = useState(initData);
+
     // 모달 끄기
     const closeModal = () => {
-        // 데이터를 업데이트하고 onUpdate 함수 호출
-        const updatedData = {
-            title,
-            startDate,
-            endDate,
-            jobTags,
-            abilityTags,
-            stackTags,
-        };
-        onUpdate(updatedData);
-
-        setModalOpen(false);
+      onUpdate(updatedData);
+      setModalOpen(false);
     };
+  
 
-    const handleTitleChange = e => {
-        setTitle(e.target.value);
+    //수정된 field만 업데이트
+    const handleInputChange = (field, value) => {
+      setUpdatedData(prevData => ({
+        ...prevData,
+        [field]: value,
+      }));
     };
-
-    const handleStartDateChange = e => {
-        setStartDate(e.target.value);
-    };
-
-    const handleEndDateChange = e => {
-        setEndDate(e.target.value);
-    };
+  
 
     return (
         <div className={styles.modalBox}>
@@ -62,8 +40,9 @@ const PostUpdateModal = ({
                             <input
                                 className={styles.inputText}
                                 type="text"
-                                value={title}
-                                onChange={handleTitleChange}
+                                value={updatedData.title}
+                                required
+                                onChange={e => handleInputChange('title', e.target.value)}
                                 placeholder="제목을 입력해주세요"
                             />
                         </div>
@@ -74,34 +53,34 @@ const PostUpdateModal = ({
                                     <img src="/right.png" alt="오른쪽 화살표" />
                                     <input
                                         type="date"
-                                        value={startDate}
-                                        onChange={handleStartDateChange}
+                                        value={updatedData.startDate}
+                                        onChange={e => handleInputChange('startDate', e.target.value)}
                                     />
                                 </div>
                                 <div className={styles.date}>
                                     <img src="/left.png" alt="왼쪽 화살표" />
                                     <input
                                         type="date"
-                                        value={endDate}
-                                        onChange={handleEndDateChange}
+                                        value={updatedData.endDate}
+                                        onChange={e => handleInputChange('endDate', e.target.value)}
                                     />
                                 </div>
                             </div>
                         </div>
                         <TagInput
-                            tags={jobTags}
-                            setTags={setJobTags}
+                            tags={updatedData.jobTags}
+                            setTags={tags => handleInputChange('jobTags', tags)}
                             tagType="관련 직무"
                         />
                         <TagInput
-                            tags={abilityTags}
-                            setTags={setAbilityTags}
-                            tagType="키워드"
+                            tags={updatedData.abilityTags}
+                            setTags={tags => handleInputChange('abilityTags', tags)}
+                            tagType="핵심 역량"
                         />
                         <TagInput
-                            tags={stackTags}
-                            setTags={setStackTags}
-                            tagType="사용 기술"
+                            tags={updatedData.stackTags}
+                            setTags={tags => handleInputChange('stackTags', tags)}
+                            tagType="사용한 기술"
                         />
                     </div>
                 </div>
