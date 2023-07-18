@@ -4,7 +4,8 @@ import styles from '../styles/Home.module.css';
 import Modal from '../components/Modal';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { getPosts } from '../apis/PostAPI';
+import { getTagPosts } from '../apis/TagAPI';
 
 
 const Home = () => {
@@ -30,20 +31,20 @@ const Home = () => {
         setOrderBy(order);
     };
     
-    //api get요청으로 orderBy에 따라 posts목록 받아오기
+    // API 요청으로 posts 목록 받아오기
     useEffect(() => {
-        fetch(`/api/v1/posts?page=${currentPage}&orderBy=${orderBy}`)
-          .then(response => response.json())
-          .then(data => {
-            setPosts(data.result.pagePosts);
-            setTotalPages(data.result.totalPages);
-            setTotalPosts(data.result.totalPosts);
-          })
-          .catch(error => {
-            console.error('post 데이터를 가져오는 동안 오류가 발생했습니다.', error);
-          });
-      }, [orderBy,currentPage]);
-
+        getPosts(currentPage, orderBy)
+        .then((data) => {
+            if (data) {
+            setPosts(data.pagePosts);
+            setTotalPages(data.totalPages);
+            setTotalPosts(data.totalPosts);
+            }
+        })
+        .catch((error) => {
+            console.error('포스트 데이터를 가져오는 동안 오류가 발생했습니다.', error);
+        });
+    }, [orderBy, currentPage]);
 
     //선택된 태그
     const [selectedTags, setSelectedTags] = useState([]);
@@ -51,27 +52,23 @@ const Home = () => {
 
     //api get요청으로 선택된 tags에 해당하는 posts목록 받아오기
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const params = selectedTags.map(tag => `tag=${encodeURIComponent(tag)}`);
-            const query = params.join('&');
-            const url = `/api/v1/posts/tag?${query}&page=${currentPage}`;
-            const response = await axios.get(url);
-            setTagPosts(response.data.result.pagePosts);
-            setTotalPages(response.data.result.totalPages);
-            setTotalPosts(response.data.result.totalPosts);
-          } catch (error) {
-                console.error('post 데이터를 가져오는 동안 오류가 발생했습니다.', error);
-          }
-        };
-
         if (selectedTags.length > 0) {
-            fetchData();
-          } else {
-            // selectedTags가 비어있을 때에는 tagPosts를 초기화
-            setTagPosts([]);
-          }
-      }, [selectedTags,currentPage]);
+          getTagPosts(selectedTags, currentPage)
+            .then((data) => {
+              if (data) {
+                setTagPosts(data.pagePosts);
+                setTotalPages(data.totalPages);
+                setTotalPosts(data.totalPosts);
+              }
+            })
+            .catch((error) => {
+              console.error('태그별 포스트 데이터를 가져오는 동안 오류가 발생했습니다.', error);
+            });
+        } else {
+          // selectedTags가 비어있을 때에는 tagPosts를 초기화
+          setTagPosts([]);
+        }
+      }, [selectedTags, currentPage]);
     
     
     // 모달창 노출 여부 state

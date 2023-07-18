@@ -1,12 +1,14 @@
 import React, { useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Header from '../components/Header';
 import PostForm from '../components/PostForm';
 import ExperienceForm from '../components/ExperienceForm';
 import styles from '../styles/Write.module.css';
-import axios from 'axios';
-
+import {createPost } from '../apis/PostAPI';
 
 const Write = () => {
+    const navigate = useNavigate();
 
     //제목, 기간, tag
     const [title, setTitle] = useState('');
@@ -74,69 +76,33 @@ const Write = () => {
     };
 
 
-    //전체 form 제출
+    // 전체 form 제출
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        //createTagRequest 형식에 맞춤
-        const tags = [  
-                {
-                    tagType: 'Job',
-                    tagName: jobTags
-                },
-                {
-                    tagType: 'Stack',
-                    tagName: stackTags
-                },
-                {
-                    tagType: 'Ability',
-                    tagName: abilityTags
-                }
-            ];
-        
-
-        //experience는 title:content 쌍의 map 형식으로 전송
-        const experiencesObj = {};
-        experiences.forEach((experience) => {
-            experiencesObj[experience.title] = experience.content;
-        });
-        // 필드가 비어있는지 확인
-        if (startDate === '' || endDate === '') {
-            alert('기간을 선택해주세요.'); 
-            return;
-        }
-        //createPostRequst Dto 형식에 맞춤
-        const createPostRequest = {
-            title : title,
-            beginAt : startDate+"T12:00:00",
-            finishAt : endDate+"T12:00:00",
-            tags : tags,
-            experiences : experiencesObj
-        }
-        
-        //formData에 추가
-        const formData = new FormData();
-        formData.append('createPostRequest', new Blob([JSON.stringify(createPostRequest)], {type: "application/json"}));
-        
-         // 선택된 파일들을 formData에 리스트로 추가
-        selectedFiles.forEach((file, index) => {
-            formData.append('file', file);
-        });
-
         try {
-            const response = await axios ({
-                method: 'post',
-                url: '/api/v1/posts',
-                data: formData,
-                headers: {
-                    'Content-Type': `multipart/form-data`, // Content-Type을 반드시 이렇게 하여야 한다.
-                  },
-            });
+        const response = await createPost(
+            {
+            title: title,
+            startDate: startDate,
+            endDate: endDate,
+            jobTags: jobTags,
+            abilityTags: abilityTags,
+            stackTags: stackTags,
+            experiences: experiences,
+            },
+            selectedFiles
+        );
+        
+        console.log(response); // 서버로부터의 응답 데이터
+        // postId 추출
+        const postId = response.result.postId;
+        console.log('postId:', postId);
 
-            console.log(response.data); // 서버로부터의 응답 데이터
+        // postId를 사용하여 navigate
+        navigate(`/posts/${postId}`);
         } catch (error) {
-            console.error('creat post 요청 중 오류가 발생했습니다.', error);
-        }   
+        console.error('create post 요청 중 오류가 발생했습니다.', error);
+        }
     };
 
 
