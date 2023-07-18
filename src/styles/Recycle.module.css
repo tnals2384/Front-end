@@ -1,0 +1,169 @@
+/*고정 헤더*/
+.fixedHeader {
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+    padding: 10px;
+    z-index: 1; /*최상단 위치 */
+}
+.fixedHeader h1 {
+    margin-left: 20%;
+}
+
+/*헤더 제외 전체를 포함하는 conatiner*/
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin-top: 200px;
+  }
+  
+  .postListContainer {
+    display: flex;
+    width: 65%;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20;
+  }
+  
+  .postList {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .postListli {
+    padding: 10px;
+    border-bottom: 1px solid #efefef;
+    padding-bottom: 20px;
+    margin-bottom: 20px; /* 각 항목 사이의 간격을 주기 위해 추가 */
+  }
+  
+  .buttonContainer {
+    display: flex;
+    width: 65%;
+    margin-top: 50px;
+    flex-wrap: wrap; /* 버튼들이 여러 줄로 나열되도록 설정 */
+  }
+  
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdownContent {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    min-width: 80px;
+    z-index: 1;
+    padding: 8px;
+  }
+  
+  .dropdownContent button {
+    background-color: transparent;
+    border: none;
+    color: #333;
+    padding: 4px 8px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+ /* 태그 버튼들이 여러 줄로 나열되도록 설정 */
+.buttonContainer .button {
+    margin-bottom: 10px;
+  }
+
+
+  .dropdownContent button:active {
+    background-color: #ccc;
+  }
+  
+  .dropdown:hover .dropdownContent {
+    display: block;
+  }
+  
+  .titleDuration {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .tags {
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap; /* 태그들이 여러 줄로 나열되도록 설정 */
+  }
+  
+  .tag {
+    margin-right: 7px;
+    margin-bottom: 7px; /* 태그들 사이의 간격을 주기 위해 추가 */
+    border: 2px solid #adadad;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 13px;
+    color: #6f6f6f;
+  }
+  
+.duration {
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.button {
+    padding-top: 4px;
+    border: 3px solid #f48282;
+    border-radius: 20px;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: white;
+    margin-right: 10px;
+
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 30px;
+    /* identical to box height, or 105% */
+
+    text-align: center;
+    letter-spacing: -0.408px;
+
+    color: #ed5c5c;
+}
+
+.notSelected {
+    border: 3px solid #6f6f6f;
+    color: #6f6f6f;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.pageButton {
+    margin-top: 20px;
+    margin-left: 10px;
+    border: 2px solid #adadad;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+  }
+  .disabled {
+    background-color: #dcdcdc;
+  }
+  
