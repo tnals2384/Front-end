@@ -142,8 +142,8 @@ const Home = () => {
                     <ul className={styles.postList}>
                     {selectedTags.length === 0
                     ? posts.map((post) => (
-                        <div key={post.id} className={styles.postListli}>
-                            <Link to={`/posts/${post.id}`}>
+                        <div key={post.postId} className={styles.postListli}>
+                            <Link to={`/posts/${post.postId}`}>
                             <li>
                                 <div className={styles.titleDuration}>
                                 <h3>{post.title}</h3>

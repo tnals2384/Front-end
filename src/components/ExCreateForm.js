@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/Detail.module.css';
 
 
-const ExCreateForm = ({ experiences, setExperiences,onAddExperience }) => {
+const ExCreateForm = ({onAddExperience }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -10,7 +10,6 @@ const ExCreateForm = ({ experiences, setExperiences,onAddExperience }) => {
 
   const handleSave = () => {
     const newExperience = {
-      experienceId: experiences.length + 1,
       title: title,
       content: content,
     };
