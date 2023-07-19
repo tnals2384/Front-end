@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import styles from '../styles/Modal.module.css';
-import TagInput from './TagInput';
+import styles from '../../styles/Modal.module.css';
+import TagInput from '../Tag/TagInput';
 
 
 //단일 조회화면에서 Post 정보들을 수정하는 Modal

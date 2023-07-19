@@ -15,11 +15,6 @@ import {
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     
-    // const handleDeletePost = (postId) => {
-    //     const updatedPosts = posts.filter((post) => post.id !== postId);
-    //     setPosts(updatedPosts);
-    //   };
-
     return <Router>
         <Routes>
             <Route path="/" element={isLoggedIn ? <Home/> : <Navigate to="/login" />} />

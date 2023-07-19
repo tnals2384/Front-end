@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../styles/Detail.module.css';
+import styles from '../../styles/Detail.module.css';
 import ExUpdateForm from './ExUpdateForm';
 
 //단일 experience를 담은 container

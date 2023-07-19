@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../styles/Detail.module.css';
+import styles from '../../styles/Detail.module.css';
 
 
 const ExCreateForm = ({onAddExperience }) => {

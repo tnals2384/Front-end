@@ -1,20 +1,26 @@
 import React, { useState} from 'react';
-import Header from '../components/Header';
-import PostForm from '../components/PostForm';
-import ExperienceForm from '../components/ExperienceForm';
-import styles from '../styles/Write.module.css';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
+import Header from '../components/Header';
+import PostForm from '../components/Post/PostForm';
+import ExperienceForm from '../components/Experience/ExperienceForm';
+import FileUploader from '../components/File/FileUploader';
+import styles from '../styles/Write.module.css';
+import {createPost } from '../apis/PostAPI';
 
 const Write = () => {
+    const navigate = useNavigate();
 
-    //제목, 기간, tag
-    const [title, setTitle] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [jobTags, setJobTags] = useState([]);
-    const [abilityTags, setAbilityTags] = useState([]);
-    const [stackTags, setStackTags] = useState([]);
+
+    //postInfo
+    const [post, setPost] = useState({
+        title: '',
+        startDate: '',
+        endDate: '',
+        jobTags: [],
+        abilityTags: [],
+        stackTags: [],
+    });
 
     //experiences 기본 질문 4개
     const [experiences, setExperiences] = useState([
@@ -44,24 +50,13 @@ const Write = () => {
     setExperiences(updatedExperiences);
     };
 
-    //파일 첨부
-    const fileInput = React.useRef(null);
-
     //선택된 파일
     const [selectedFiles, setSelectedFiles] = useState([]);
 
-
-    //file 추가 버튼을 누를경우
-    const handleButtonClick = e => {
-        e.preventDefault();
-        fileInput.current.click();
-    };
         
     //파일을 추가할 경우
-    const handleFileChange = e => {
-        e.preventDefault();
-        const files = Array.from(e.target.files);
-        setSelectedFiles(prevSelectedFiles => [...prevSelectedFiles, ...files]);
+    const handleFileChange = (selectedFiles) => {
+        setSelectedFiles(prevSelectedFiles => [...prevSelectedFiles, ...selectedFiles]);
     };
 
     //선택 파일을 선택 해제할 경우
@@ -74,69 +69,26 @@ const Write = () => {
     };
 
 
-    //전체 form 제출
+    // 전체 form 제출
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        //createTagRequest 형식에 맞춤
-        const tags = [  
-                {
-                    tagType: 'Job',
-                    tagName: jobTags
-                },
-                {
-                    tagType: 'Stack',
-                    tagName: stackTags
-                },
-                {
-                    tagType: 'Ability',
-                    tagName: abilityTags
-                }
-            ];
-        
-
-        //experience는 title:content 쌍의 map 형식으로 전송
-        const experiencesObj = {};
-        experiences.forEach((experience) => {
-            experiencesObj[experience.title] = experience.content;
-        });
-        // 필드가 비어있는지 확인
-        if (startDate === '' || endDate === '') {
-            alert('기간을 선택해주세요.'); 
-            return;
-        }
-        //createPostRequst Dto 형식에 맞춤
-        const createPostRequest = {
-            title : title,
-            beginAt : startDate+"T12:00:00",
-            finishAt : endDate+"T12:00:00",
-            tags : tags,
-            experiences : experiencesObj
-        }
-        
-        //formData에 추가
-        const formData = new FormData();
-        formData.append('createPostRequest', new Blob([JSON.stringify(createPostRequest)], {type: "application/json"}));
-        
-         // 선택된 파일들을 formData에 리스트로 추가
-        selectedFiles.forEach((file, index) => {
-            formData.append('file', file);
-        });
-
         try {
-            const response = await axios ({
-                method: 'post',
-                url: '/api/v1/posts',
-                data: formData,
-                headers: {
-                    'Content-Type': `multipart/form-data`, // Content-Type을 반드시 이렇게 하여야 한다.
-                  },
-            });
+        const response = await createPost(
+            post, experiences ,
+            selectedFiles
+        );
+        
+        console.log(response); // 서버로부터의 응답 데이터
+        // postId 추출
+        const postId = response.result.postId;
+        console.log('postId:', postId);
 
-            console.log(response.data); // 서버로부터의 응답 데이터
+        // postId를 사용하여 navigate
+        navigate(`/posts/${postId}`);
         } catch (error) {
-            console.error('creat post 요청 중 오류가 발생했습니다.', error);
-        }   
+        console.error('create post 요청 중 오류가 발생했습니다.', error);
+        }
     };
 
 
@@ -148,13 +100,8 @@ const Write = () => {
             </div>
             <div className={styles.writeContainer}>
                 <form className={styles.formContainer} onSubmit={handleSubmit}>
-                    <PostForm title={title} setTitle={setTitle}
-                            startDate={startDate} setStartDate={setStartDate}
-                            endDate={endDate} setEndDate={setEndDate}
-                            jobTags={jobTags} setJobTags={setJobTags}
-                            abilityTags={abilityTags} setAbilityTags={setAbilityTags}
-                            stackTags={stackTags} setStackTags={setStackTags}
-                             />
+                    <PostForm post={post} setPost={setPost}/>
+
                     {experiences.map((experience, index) => (
                         <ExperienceForm
                             onSave={experience => handleSaveExperience(index, experience)}
@@ -173,26 +120,7 @@ const Write = () => {
                         </button>
                     </div>
 
-                    <div className={styles.add}>
-                        {' '}
-                        파일 첨부하기
-                        <button
-                            className={styles.addButton}
-                            onClick={handleButtonClick}
-                        >
-                            +
-                        </button>
-                        <input
-                            id="file-upload"
-                            type="file"
-                            ref={fileInput}
-                            multiple={true}
-                            onChange={handleFileChange}
-                            className={styles.addButton}
-                            style={{ display: 'none' }}
-                        />
-                    </div>
-
+                    <FileUploader onFileChange={handleFileChange} />
                     {selectedFiles.length > 0 && (
                         <div className={styles.fileList}>
                             {selectedFiles.map((file, index) => ( 
@@ -220,7 +148,6 @@ const Write = () => {
                             ))}
                         </div>
                     )}
-
                     <button className={styles.writeButton} type="submit">글쓰기</button>
                     <div className={styles.last}>PODA</div>
                 </form>

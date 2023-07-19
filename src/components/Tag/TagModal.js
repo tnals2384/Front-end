@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import styles from '../styles/Modal.module.css';
+import styles from '../../styles/Modal.module.css';
 
-const Modal = ({ setModalOpen, selectedTags, setSelectedTags,setCurrentPage }) => {
+const TagModal = ({ setModalOpen, selectedTags, setSelectedTags,setCurrentPage }) => {
     //나의 tag list 
     const [tags, setTags] = useState([]);
 
@@ -68,4 +68,4 @@ const Modal = ({ setModalOpen, selectedTags, setSelectedTags,setCurrentPage }) =
             </div>
     );
 };
-export default Modal;
+export default TagModal;
