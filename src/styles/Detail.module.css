@@ -13,8 +13,6 @@
 .container {
     display: flex;
     justify-content: center;
-
-    height: 100vh;
     margin-top: 100px;
 }
 
@@ -183,6 +181,7 @@
     background-color: #a774c7;
     color:white;
 }
+
 .textContainer {
     box-sizing: border-box;
 

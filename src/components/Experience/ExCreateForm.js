@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from '../../styles/Detail.module.css';
 
 
-const ExCreateForm = ({onAddExperience }) => {
+const ExCreateForm = ({onAddExperience,setShowForm }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -16,6 +16,7 @@ const ExCreateForm = ({onAddExperience }) => {
     onAddExperience(newExperience);
     setTitle('');
     setContent('');
+    setShowForm(false);
   };
 
 

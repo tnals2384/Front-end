@@ -10,6 +10,7 @@ import FileUploader from '../components/File/FileUploader';
 import { getPost, updatePost, deletePost } from '../apis/PostAPI'; // PostAPI에서 함수를 import
 import { addExperience, updateExperience, deleteExperience } from '../apis/ExperienceAPI'; // ExperienceAPI에서 함수를 import
 import { uploadFiles, deleteFile, getFiles } from '../apis/FileAPI'; // FileAPI에서 함수를 import
+import Footer from '../components/Footer';
 
 const PostDetail = () => {
 
@@ -235,15 +236,10 @@ const PostDetail = () => {
 
                     <FileList files={files} onDeleteFile={handleDeleteFile} />
                     <FileUploader onFileChange={handleFileChange} />
-                    
-                    <a
-                        href="https://www.flaticon.com/kr/free-icons/"
-                        title="기어 아이콘"
-                    >
-                        기어 아이콘 제작자: Freepik - Flaticon
-                    </a>
+
                 </div>
             </div>
+            <Footer/>
         </div>
     );
 };

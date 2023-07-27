@@ -7,6 +7,7 @@ import { getPosts } from '../apis/PostAPI';
 import { getTagPosts } from '../apis/TagAPI';
 import Pagination from '../components/Pagination';
 import PostList from '../components/Post/PostList';
+import Footer from '../components/Footer';
 
 
 const Home = () => {
@@ -65,7 +66,7 @@ const Home = () => {
         } else {
             // selectedTags가 비어있을 때에는 전체 post 목록을 가져오기 위해 getPosts를 호출
             setTagPosts(posts);
-            setTotalPages(Math.ceil(posts.length / 10)+1);
+            setTotalPages(Math.ceil(posts.length / 10));
             setTotalPosts(posts.length);
         }
     }, [selectedTags, currentPage, posts]);
@@ -107,7 +108,8 @@ const Home = () => {
                     />
                 )}
             </div>
-        </div>
+            <Footer />
+      </div>
     );
 };
 

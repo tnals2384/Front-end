@@ -1,0 +1,21 @@
+.footerContainer {
+    padding: 2px;
+    color: white;
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+    background-color: rgba(168, 127, 207, 0.564);
+  }
+  
+  .footerContent {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .footerText {
+    font-size: 14px;
+  }
+  
+  .contact {
+    cursor: pointer;
+  }

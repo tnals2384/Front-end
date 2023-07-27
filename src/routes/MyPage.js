@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import styles from '../styles/MyPage.module.css';
 import { LogoutAPI, DeleteMemberAPI } from '../apis/MemberAPI';
+import Footer from '../components/Footer';
 
 const MyPage = () => {
 
@@ -63,6 +64,7 @@ const MyPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
