@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styles from '../styles/Recycle.module.css';
 import Header from '../components/Header';
 
@@ -72,7 +71,6 @@ const Recycle = () => {
           <ul className={styles.postList}>
           {posts && posts.map((post) => (
             <li key={post.title} className={styles.postListli}>
-              <Link to={`/posts/${post.postId}`}>
                 <div>
                   <div className={styles.titleDuration}>
                     <h3>{post.title}</h3>
@@ -92,7 +90,6 @@ const Recycle = () => {
                     <button className={styles.recycle} onClick={() =>handleDelete(post.postId)}>삭제</button>
                   </div>
                 </div>
-              </Link>
             </li>
           ))}
           </ul>

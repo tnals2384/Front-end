@@ -29,6 +29,7 @@ const ExperienceList = ({ experiences, onAddExperience, onUpdateExperience, onDe
       ) : (
         <ExCreateForm
           onAddExperience={onAddExperience}
+          setShowForm={setShowForm}
         />
       )}
     </>

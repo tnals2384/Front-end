@@ -16,7 +16,6 @@
 .writeContainer {
     display: flex;
     justify-content: center;
-    height: 100vh;
     margin-top: 180px;
 }
 
@@ -278,6 +277,7 @@
     width: 80%;
     padding: 10px;
     margin-top: 20px;
+    margin-bottom: 50px;
     background: #a774c7;
     border-radius: 15px;
     border-color: #a774c7;
@@ -292,8 +292,3 @@
   }
 
 
-/*임시 Footer..*/
-.last {
-    margin-top: 100px;
-    color:white;
-}

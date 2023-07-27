@@ -7,6 +7,7 @@ import ExperienceForm from '../components/Experience/ExperienceForm';
 import FileUploader from '../components/File/FileUploader';
 import styles from '../styles/Write.module.css';
 import {createPost } from '../apis/PostAPI';
+import Footer from '../components/Footer';
 
 const Write = () => {
     const navigate = useNavigate();
@@ -149,9 +150,9 @@ const Write = () => {
                         </div>
                     )}
                     <button className={styles.writeButton} type="submit">글쓰기</button>
-                    <div className={styles.last}>PODA</div>
                 </form>
             </div>
+            <Footer />
         </div>
     );
 };
