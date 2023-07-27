@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import styles from '../styles/MyPage.module.css';
+import { LogoutAPI, DeleteMemberAPI } from '../apis/MemberAPI';
 
 const MyPage = () => {
 
@@ -19,6 +20,17 @@ const MyPage = () => {
         console.error('login user 데이터를 가져오는 동안 오류가 발생했습니다.', error);
       });
   });
+
+  const openFeedbackPage = () => {
+    window.open(
+      'https://docs.google.com/forms/d/e/1FAIpQLSeYz01w9IFGmR_1HZc5BIK1jr9hAqrKBxEe08gRnMezLO2A_Q/viewform?usp=sf_link',
+      '_blank'
+    );
+  };
+
+  const { handleLogout } = LogoutAPI();
+  const { deleteMember } = DeleteMemberAPI();
+
 
   return (
     <div>
@@ -44,9 +56,9 @@ const MyPage = () => {
           <div>
             <h1>설정</h1>
             <div className={styles.settingBox}>
-              <a href='https://docs.google.com/forms/d/e/1FAIpQLSeYz01w9IFGmR_1HZc5BIK1jr9hAqrKBxEe08gRnMezLO2A_Q/viewform?usp=sf_link'>개발자에게 피드백 보내기</a>
-              <p>로그아웃</p>
-              <p>회원탈퇴</p>
+              <button onClick={openFeedbackPage}>개발자에게 피드백 보내기</button>
+              <button onClick={handleLogout}>로그아웃</button>
+              <button onClick={deleteMember}>회원탈퇴</button>
             </div>
           </div>
         </div>

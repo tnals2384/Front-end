@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { LogoutAPI } from '../apis/MemberAPI';
 import styles from '../styles/Header.module.css';
 
 const Header = () => {
+    const { handleLogout } = LogoutAPI();
+
     return (
         <div>
             <nav>
@@ -18,7 +21,7 @@ const Header = () => {
                     <Link to="/mypage">
                     <button className={styles.mypageButton}>마이페이지</button>
                     </Link>
-                    <button className={styles.loginButton}>로그아웃</button>
+                    <button className={styles.loginButton} onClick={handleLogout}>로그아웃</button>
                 </div>
             </nav>
         </div>

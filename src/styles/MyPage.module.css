@@ -52,29 +52,25 @@
 }
 
 /* 설정 */
-.settingBox{
+.settingBox {
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    align-items: flex-start;
     width: 800px;
-    height: 175px;
+    height: 180px;
     border-radius: 40px; 
     background-color: #f0f0f0; 
     padding: 10px;  
     margin-top: 30px;
     padding-top: 50px;
-}
-
-.settingBox p{
-    margin-left: 100px;
-    margin-right: 40px;
-    margin-top: 36px;
-    margin-bottom: 28px;
+  }
+  
+  .settingBox button {
+    padding-left: 75px;
+    border: none;
+    margin: 13px; 
     font-size: 18px;
-}
-.settingBox a{
-    margin-left: 100px;
-    margin-right: 40px;
-    margin-top: 100px;
-    margin-bottom: 28px;
-    font-size: 18px;
-    color: black;
     text-decoration: none;
-}
+    cursor: pointer;
+  }
+  

@@ -5,7 +5,7 @@ const Login = () => {
         <div className={styles.main}>
             <img className={styles.mainImg} src="/PODA.png" alt="mainImg" />
             <div className={styles.googleLogin}>
-                <a href="#" className={styles.googleButton}>
+                <a href="http://localhost:8080/oauth2/authorization/google" className={styles.googleButton}>
                     <div className={styles.googleIconWrapper}>
                         <img
                             className={styles.googleIcon}
