@@ -13,12 +13,12 @@ import {
   } from "react-router-dom";
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     
     return <Router>
         <Routes>
             <Route path="/" element={isLoggedIn ? <Home/> : <Navigate to="/login" />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/write" element={<Write />} />
             <Route path="/posts/:postId" element={<PostDetail />} />
             <Route path="/mypage" element={<MyPage />} />
